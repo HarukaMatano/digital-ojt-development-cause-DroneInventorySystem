@@ -22,6 +22,7 @@ public class StockListController extends AbstractController {
 	@GetMapping(UrlConsts.STOCK_LIST)
 	public String index() {
 
+		System.out.println("Navigating to stock list.");
 		return "admin/stockList/index";
 	}
 }
