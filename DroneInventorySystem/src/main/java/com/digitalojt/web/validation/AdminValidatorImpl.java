@@ -7,7 +7,7 @@ import com.digitalojt.web.util.ParmCheckUtil;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class AdminValidatorImpl implements ConstraintValidator<AdminValidator, LoginForm>
+public abstract class AdminValidatorImpl implements ConstraintValidator<AdminValidator, LoginForm>
 {
 	public boolean isValid(String adminId, ConstraintValidatorContext context) {
         
