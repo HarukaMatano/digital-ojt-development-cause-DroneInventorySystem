@@ -1,19 +1,18 @@
-package com.digitalojt.web.entity;
+package com.digitalojt.web.authentication;
 
 import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor	
 public class UserDetailsImpl implements UserDetails
 {
 	private final String username;
     private final String password;
 
-    public UserDetailsImpl(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
