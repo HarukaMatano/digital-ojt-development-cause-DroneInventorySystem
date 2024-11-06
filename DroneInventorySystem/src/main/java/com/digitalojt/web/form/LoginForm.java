@@ -1,7 +1,5 @@
 package com.digitalojt.web.form;
 
-import com.digitalojt.web.validation.AdminValidator;
-
 //import com.digitalojt.web.validation.AdminValidator;
 
 import lombok.Data;
@@ -13,7 +11,6 @@ import lombok.Data;
  *
  */
 @Data
-@AdminValidator 
 public class LoginForm {
 
 	/**

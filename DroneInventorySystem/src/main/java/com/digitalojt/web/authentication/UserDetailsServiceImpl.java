@@ -32,12 +32,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	 */													
 	@Override													
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException 
-	{													
-		System.out.println("Loading user by username: " + username); // デバッグ用ログ												
+	{																								
 		AdminInfo adminInfo = adminRepository.findByAdminId(username)												
 				.orElseThrow(() -> new UsernameNotFoundException(username));										
 		
-		System.out.println("Admin info: " + adminInfo); // デバッグ用ログ
 		return User.withUsername(adminInfo.getAdminId())												
 				.password(adminInfo.getPassword())										
 				.roles("ADMIN")				// ロールの設定(今回はADMINのみ)						
