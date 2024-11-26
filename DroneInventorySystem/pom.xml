@@ -110,6 +110,12 @@
 			<artifactId>spring-security-core</artifactId>											
 		</dependency>												
 
+		<!-- Logback -->
+		<dependency>
+    		<groupId>ch.qos.logback</groupId>
+    		<artifactId>logback-classic</artifactId>
+		</dependency>
+
 		
 	</dependencies>
 
