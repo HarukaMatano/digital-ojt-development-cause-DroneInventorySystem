@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.digitalojt.web.consts.FeatureName;
+import com.digitalojt.web.consts.ScreenName;
 import com.digitalojt.web.consts.UrlConsts;
 import com.digitalojt.web.entity.StockInfo;
 import com.digitalojt.web.service.StockInfoService;
@@ -22,7 +24,8 @@ import lombok.RequiredArgsConstructor;
  */
 @Controller
 @RequiredArgsConstructor
-public class StockListController extends AbstractController {
+public class StockListController extends AbstractController 
+{
 
     // ロガーの追加
     private static final Logger logger = LoggerFactory.getLogger(StockListController.class);
@@ -39,13 +42,13 @@ public class StockListController extends AbstractController {
     public String index(Model model) 
     {
         // ログの追加
-        logger.info("在庫一覧画面の初期表示処理を開始します。");
+        logger.info(ScreenName.STOCK+"の"+FeatureName.LIST+"を開始します。");
 
         List<StockInfo> stockInfoList = stockInfoService.getActiveStockInfoData();
         model.addAttribute("stockInfoList", stockInfoList);
 
         // ログの追加
-        logger.info("在庫一覧画面の初期表示処理が完了しました。");
+        logger.info(ScreenName.STOCK+"の"+FeatureName.LIST+"を終了します。");
         
         return "admin/stockList/index";
     }
