@@ -37,7 +37,7 @@ public class CategoryInfo
     private String categoryName;
 
     @Column(name = "delete_flag")
-    private Integer deleteFlag;
+    private String deleteFlag;
 
     @Column(name = "create_date")
     private LocalDateTime createDate;

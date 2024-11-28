@@ -14,11 +14,48 @@
       </div>
       
       <div class="card-body">
-        <!-- 検索 -->
+        <!-- 検索(作成中) -->
         <div class="search-container">
-        
-        
+        	<form class="form-inline" method="post" th:action="@{'/admin/stockList/search'}" th:object="${StockInfoForm}">
+    			<label for="searchTerm" class="mr-2"><u>検索条件</u></label>
+    			<label for="searchTerm" class="mr-2">分類</label>
+    			<select id="searchTerm" name="category" class="form-control mr-2">
+        			<option value="">選択してください</option>
+        			<option th:each="category : ${categoryInfoList}" 
+          			th:value="${category.categoryName}" 
+            		th:text="${category.categoryName}"></option>    
+    			</select>
+    
+    		&nbsp;&nbsp;
+    
+    			<label for="searchTerm" class="mr-2">名称</label>
+    			<select id="searchTerm" name="name" class="form-control mr-2">
+        			<option value="">選択してください</option>
+        			<option th:each="item : ${stockInfoListSearch}" 
+            		th:value="${item.name}" 
+            		th:text="${item.name}"></option>    
+    			</select>
+    
+    		&nbsp;&nbsp;
+    
+    			<label for="searchTerm" class="mr-2">個数</label>
+    			<input type="text" id="searchTerm" name="amount" class="form-control mr-2">
+    			<select id="searchTerm" name="than" class="form-control mr-2">
+        			<option value="">選択してください</option>
+        			<option value="以上">以上</option>
+        			<option value="以下">以下</option>    
+    			</select>
+                                    
+    			<button type="submit" class="btn btn-primary">検索</button>
+			</form>
+ 				
+ 				<!-- エラーメッセージの表示 -->
+ 				<div th:if="${errorMsg != null}" class="text-danger">
+					 <p th:text="${errorMsg}"></p>
+				</div>
         </div>
+        
+        &nbsp;
         
         <!-- 在庫情報テーブル -->
         <div class="table-responsive">

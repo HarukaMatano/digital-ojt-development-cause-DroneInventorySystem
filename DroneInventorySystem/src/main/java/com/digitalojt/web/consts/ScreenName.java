@@ -1,28 +1,13 @@
 package com.digitalojt.web.consts;
 
 /**
- * 画面名 Enumクラス
+ * 画面名クラス
  * 
  * @author haruka matano
  */
 
-public enum ScreenName 
+public class ScreenName 
 {	
-	
-	STOCK("在庫一覧画面"),
-	STOCK_CENETR("在庫センター画面");
-	
-	
-	private final String name;
-
-    ScreenName(String name) 
-    {
-        this.name = name;
-    }
-
-    public String getName() 
-    {
-        return name;
-    }
-
+	public static final String	STOCK="在庫一覧画面";
+	public static final String	STOCK_CENETR="在庫センター画面";
 }

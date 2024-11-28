@@ -26,13 +26,4 @@ public class CategoryInfoForm
 	 */
 	private String categoryName;
 
-	/**
-	 * 容量(From)
-	 */
-	private Integer storageCapacityFrom;
-
-	/**
-	 * 容量(To)
-	 */
-	private Integer storageCapacityTo;
 }

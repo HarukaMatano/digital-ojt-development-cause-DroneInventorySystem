@@ -33,4 +33,11 @@ public class ErrorMessage {
 	// 不正な文字列を使用した検索に関するエラーメッセージ
 	public static final String CATEGORY_INVALID_INPUT_ERROR_MESSAGE = "categoryName.invalid.input";
 	
+	// 不正な文字列を使用した検索に関するエラーメッセージ
+	public static final String STOCK_INVALID_INPUT_ERROR_MESSAGE = "amount.invalid.input";
+		
+	// 不正な文字列を使用した検索に関するエラーメッセージ
+	public static final String STOCK_NOTNUMBER_INPUT_ERROR_MESSAGE = "amount.notNumber.input";
+			
+	
 }

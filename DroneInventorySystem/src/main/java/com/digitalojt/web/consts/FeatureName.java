@@ -1,29 +1,22 @@
 package com.digitalojt.web.consts;
 
 /**
- * 機能 Enumクラス
+ * 機能クラス
  * 
  * @author haruka matano
  */
 
-public enum FeatureName 
+public class FeatureName 
 {	
-	LIST("初期表示処理"),
-	SEARCH("検索処理"),
-	REGISTER("登録処理"),
-	UPDATE("更新処理"),
-	DELETE("削除処理");
 	
-	private final String name;
-
-    FeatureName(String name) 
-    {
-        this.name = name;
-    }
-
-    public String getName() 
-    {
-        return name;
-    }
-
+	public static final String	LIST="初期表示処理";
+			
+	public static final String	SEARCH="検索処理";
+	
+	public static final String	REGISTER="登録処理";
+	
+	public static final String	UPDATE="更新処理";
+	
+	public static final String	DELETE="削除処理";
+	
 }
