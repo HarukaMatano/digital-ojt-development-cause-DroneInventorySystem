@@ -32,9 +32,11 @@ public interface CenterInfoRepository extends JpaRepository<CenterInfo, Integer>
 			"(:storageCapacityFrom IS NULL OR s.currentStorageCapacity >= :storageCapacityFrom) AND " +
 			"(:storageCapacityTo IS NULL OR s.currentStorageCapacity <= :storageCapacityTo) AND " +
 			"(s.operationalStatus = 0)")
-	List<CenterInfo> findByCenterNameAndRegionAndStorageCapacity(
+	List<CenterInfo> findByCenterNameAndRegionAndStorageCapacity
+	(
 			String centerName,
 			String region,
 			Integer storageCapacityFrom,
-			Integer storageCapacityTo);
+			Integer storageCapacityTo
+	);
 }

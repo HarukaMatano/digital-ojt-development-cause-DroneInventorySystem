@@ -40,6 +40,8 @@
 					 <p th:text="${errorMsg}"></p>
 				</div>
 			</div>
+			
+			&nbsp;
  			
 			<!-- 在庫センター情報テーブル -->
 			<div class="table-responsive">
@@ -50,6 +52,8 @@
 							<th>住所</th>
 							<th>連絡先</th>
 							<th>管理者名</th>
+							<th>最大保存容量(m<sup>3</sup>)</th>
+							<th>現在保存容量(m<sup>3</sup>)</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -58,6 +62,11 @@
 							<td> [[${item.address}]] </td>
 							<td> [[${item.phoneNumber}]] </td>
 							<td> [[${item.managerName}]] </td>
+							
+							<!--追記-->
+							<td> [[${item.maxStorageCapacity}]] </td>
+							<td> [[${item.currentStorageCapacity}]] </td>
+						
 						</tr>
 					</tbody>
 				</table>

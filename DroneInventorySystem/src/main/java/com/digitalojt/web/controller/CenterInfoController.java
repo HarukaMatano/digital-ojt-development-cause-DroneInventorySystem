@@ -3,6 +3,8 @@ package com.digitalojt.web.controller;
 import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +12,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.digitalojt.web.consts.FeatureName;
 import com.digitalojt.web.consts.Region;
+import com.digitalojt.web.consts.ScreenName;
 import com.digitalojt.web.consts.UrlConsts;
 import com.digitalojt.web.entity.CenterInfo;
 import com.digitalojt.web.form.CenterInfoForm;
@@ -28,8 +32,13 @@ import lombok.RequiredArgsConstructor;
  */
 @Controller
 @RequiredArgsConstructor
-public class CenterInfoController {
+public class CenterInfoController extends AbstractController 
+{
 
+	// ロガーの追加
+    private static final Logger logger = LoggerFactory.getLogger(CenterInfoController.class);
+
+	
 	/** センター情報 サービス */
 	private final CenterInfoService centerInfoService;
 
@@ -43,8 +52,12 @@ public class CenterInfoController {
 	 * @return
 	 */
 	@GetMapping(UrlConsts.CENTER_INFO)
-	public String index(Model model) {
+	public String index(Model model) 
+	{
 
+		// ログの追加
+        logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.LIST+"を開始します。");
+        
 		// 在庫センター情報画面に表示するデータを取得
 		List<CenterInfo> centerInfoList = centerInfoService.getCenterInfoData();
 
@@ -57,6 +70,9 @@ public class CenterInfoController {
 		// 都道府県プルダウン情報をセット
 		model.addAttribute("regions", regions);
 
+		// ログの追加
+        logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.LIST+"を終了します。");
+        
 		return "admin/centerInfo/index";
 	}
 
@@ -70,6 +86,9 @@ public class CenterInfoController {
 	@PostMapping(UrlConsts.CENTER_INFO_SEARCH)
 	public String search(Model model, @Valid CenterInfoForm form, BindingResult bindingResult) {
 
+		// ログの追加
+        logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.SEARCH+"を開始します。");
+        		
 		// Valid項目チェック
 		if (bindingResult.hasErrors()) {
 			
@@ -98,6 +117,9 @@ public class CenterInfoController {
 		// 都道府県プルダウン情報をセット
 		model.addAttribute("regions", regions);
 
+		// ログの追加
+        logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.SEARCH+"を終了します。");
+		
 		return "admin/centerInfo/index";
 	}
 }
