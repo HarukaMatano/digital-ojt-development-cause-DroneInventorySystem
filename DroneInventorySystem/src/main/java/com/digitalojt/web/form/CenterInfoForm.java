@@ -12,8 +12,8 @@ import lombok.Data;
  */
 @Data
 @CenterInfoFormValidator
-public class CenterInfoForm {
-
+public class CenterInfoForm 
+{
 	/**
 	 * センター名
 	 */
@@ -33,4 +33,15 @@ public class CenterInfoForm {
 	 * 容量(To)
 	 */
 	private Integer storageCapacityTo;
+	
+	private int centerId;
+	private String postCode;
+	private String address;
+	private String phoneNumber;
+	private String managerName;
+	private int operationalStatus;
+	private String maxStorageCapacity;
+	private String currentStorageCapacity;
+	private String notes;
+	
 }

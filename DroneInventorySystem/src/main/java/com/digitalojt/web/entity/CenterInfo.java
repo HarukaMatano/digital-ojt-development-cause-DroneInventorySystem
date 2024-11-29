@@ -31,6 +31,8 @@ public class CenterInfo {
 	 */
 	private String centerName;
 	
+	private String postCode;
+	
 	/**
 	 * 住所
 	 */
@@ -60,6 +62,8 @@ public class CenterInfo {
 	 * 現在容量
 	 */
 	private String currentStorageCapacity;
+	
+	private String notes;
 	
 	/**
 	 * 論理削除フラグ

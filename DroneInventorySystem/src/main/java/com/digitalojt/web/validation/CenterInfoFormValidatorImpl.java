@@ -23,8 +23,12 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
 	@Override
 	public boolean isValid(CenterInfoForm form, ConstraintValidatorContext context) {
 
-		boolean allFieldsEmpty = StringUtils.isEmpty(form.getCenterName()) &&
-				StringUtils.isEmpty(form.getRegion());
+		boolean allFieldsEmpty = 
+				StringUtils.isEmpty(form.getCenterName()) &&
+				StringUtils.isEmpty(form.getRegion())&&
+				form.getStorageCapacityFrom()==null&&
+				form.getStorageCapacityTo()==null
+				;
 
 		// すべてのフィールドが空かをチェック
 		if (allFieldsEmpty) 
@@ -38,7 +42,8 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
 
 
 		// センター名のチェック
-		if (form.getCenterName() != null) {
+		if (form.getCenterName() != null) 
+		{
 
 			// 不正文字列チェック
 			if (ParmCheckUtil.isParameterInvalid(form.getCenterName())) {
@@ -49,7 +54,8 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
 			}
 			
 			// 文字数チェック
-			if (form.getCenterName().length() > SearchParams.SEARCH_MAX_LENGTH) {
+			if (form.getCenterName().length() > SearchParams.SEARCH_MAX_LENGTH) 
+			{
 				context.disableDefaultConstraintViolation();
 				context.buildConstraintViolationWithTemplate(ErrorMessage.CENTER_NAME_LENGTH_ERROR_MESSAGE)
 						.addConstraintViolation();
@@ -68,6 +74,38 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
 				return false;
 			}
 		}
+		
+		// 現在容量のチェック
+	    if (form.getStorageCapacityFrom() != null) 
+	    {
+	        try 
+	        {
+	            Integer.parseInt(form.getStorageCapacityFrom().toString());
+	        } 
+	        catch (NumberFormatException e) 
+	        {
+	            context.disableDefaultConstraintViolation();
+	            context.buildConstraintViolationWithTemplate(ErrorMessage.INVALID_INPUT_ERROR_MESSAGE)
+	                    .addConstraintViolation();
+	            return false;
+	        }
+	    }
+
+	    if (form.getStorageCapacityTo() != null) 
+	    {
+	        try 
+	        {
+	            Integer.parseInt(form.getStorageCapacityTo().toString());
+	        } 
+	        catch (NumberFormatException e) 
+	        {
+	            context.disableDefaultConstraintViolation();
+	            context.buildConstraintViolationWithTemplate(ErrorMessage.INVALID_INPUT_ERROR_MESSAGE)
+	                    .addConstraintViolation();
+	            return false;
+	        }
+	    }
+		
 
 		// その他のバリデーションに問題なければtrueを返す
 		return true;

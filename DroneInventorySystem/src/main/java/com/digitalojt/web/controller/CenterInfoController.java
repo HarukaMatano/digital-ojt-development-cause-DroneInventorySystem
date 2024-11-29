@@ -84,14 +84,15 @@ public class CenterInfoController extends AbstractController
 	 * @return
 	 */
 	@PostMapping(UrlConsts.CENTER_INFO_SEARCH)
-	public String search(Model model, @Valid CenterInfoForm form, BindingResult bindingResult) {
+	public String search(Model model, @Valid CenterInfoForm form, BindingResult bindingResult) 
+	{
 
 		// ログの追加
         logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.SEARCH+"を開始します。");
         		
 		// Valid項目チェック
-		if (bindingResult.hasErrors()) {
-			
+		if (bindingResult.hasErrors()) 
+		{
 			// エラーメッセージをプロパティファイルから取得
 			String errorMsg = MessageManager.getMessage(messageSource, bindingResult.getGlobalError().getDefaultMessage());
 			model.addAttribute("errorMsg", errorMsg);
@@ -105,21 +106,61 @@ public class CenterInfoController extends AbstractController
 			return "admin/centerInfo/index";
 		}
 
-		// 在庫センター情報画面に表示するデータを取得
-		List<CenterInfo> centerInfoList = centerInfoService.getCenterInfoData(form.getCenterName(), form.getRegion());
-
-		// 画面表示用に商品情報リストをセット
+		// 在庫センター情報画面に表示するデータを取得→画面表示用に商品情報リストをセット
+		List<CenterInfo> centerInfoList = centerInfoService.getCenterInfoData(form.getCenterName(), form.getRegion(), form.getStorageCapacityFrom(),form.getStorageCapacityTo());
 		model.addAttribute("centerInfoList", centerInfoList);
 
-		// 都道府県Enumをリストに変換
+		// 都道府県Enumをリストに変換→都道府県プルダウン情報をセット
 		List<Region> regions = Arrays.asList(Region.values());
-
-		// 都道府県プルダウン情報をセット
 		model.addAttribute("regions", regions);
 
 		// ログの追加
         logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.SEARCH+"を終了します。");
 		
 		return "admin/centerInfo/index";
+	}
+	
+	/**
+	 * 登録
+	 * 
+	 * @param model
+	 * @param form
+	 * @return
+	 */
+	@PostMapping(UrlConsts.CENTER_REGISTER)
+	public String register(Model model, @Valid CenterInfoForm form, BindingResult bindingResult) 
+	{
+
+		// ログの追加
+        logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.REGISTER+"を開始します。");
+        		
+		
+
+		// ログの追加
+        logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.REGISTER+"を終了します。");
+		
+		return "admin/centerInfo/register";
+	}
+	
+	/**
+	 * 更新
+	 * 
+	 * @param model
+	 * @param form
+	 * @return
+	 */
+	@PostMapping(UrlConsts.CENTER_REGISTER)
+	public String update(Model model, @Valid CenterInfoForm form, BindingResult bindingResult) 
+	{
+
+		// ログの追加
+        logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.UPDATE+"を開始します。");
+        		
+		
+
+		// ログの追加
+        logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.UPDATE+"を終了します。");
+		
+		return "admin/centerInfo/register";
 	}
 }

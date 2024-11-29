@@ -31,7 +31,8 @@ public class CategoryInfoFormValidatorImpl implements ConstraintValidator<Catego
 		}
 		
 		// 分類名のチェック
-		if (form.getCategoryName() != null) {
+		if (form.getCategoryName() != null) 
+		{
 			
 			// 不正文字列チェック
 			if (ParmCheckUtil.isParameterInvalid(form.getCategoryName())) 

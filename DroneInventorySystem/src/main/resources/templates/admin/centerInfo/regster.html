@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{layout/template :: layout(~{::title},~{::body/content()})}"
+>
+  <head>
+    <title>InvenTrack</title>
+  </head>
+
+  <body>
+	<div class="card shadow mb-4">
+
+		<div class="card-header py-3">
+			<h6 class="m-0 font-weight-bold text-primary">登録・更新(在庫センター情報)</h6>
+		</div>
+
+		<div class="card-body">
+ 			
+			<!-- 在庫センター情報登録単票 -->
+			
+				<form class="form-inline" method="post" th:action="@{'/admin/centerInfo/register'}" th:object="${CenterInfoForm}">
+					
+					<label for="searchTerm" class="mr-2">在庫センターID</label>
+ 					<input type="hidden" id="searchTerm" name="centerId" class="form-control mr-2">
+ 					自動連番
+ 					
+ 					<label for="searchTerm" class="mr-2">在庫センター名</label>
+ 					<input type="text" id="searchTerm" name="centerName" class="form-control mr-2">
+						 
+					<label for="searchTerm" class="mr-2">郵便番号</label>
+ 					<input type="text" id="searchTerm" name="postCode" class="form-control mr-2">
+ 					
+					<label for="searchTerm" class="mr-2">住所</label>
+ 					<input type="text" id="searchTerm" name="address" class="form-control mr-2">
+					
+					<label for="searchTerm" class="mr-2">電話番号</label>
+ 					<input type="text" id="searchTerm" name="phoneNumber" class="form-control mr-2">
+					
+					<label for="searchTerm" class="mr-2">管理者名</label>
+ 					<input type="text" id="searchTerm" name="anagerName" class="form-control mr-2">
+					
+					<label for="searchTerm" class="mr-2">稼働ステータス</label>
+ 					<input type="text" id="searchTerm" name="operationalStatus" class="form-control mr-2">
+					
+            		<input type="radio" name="operationalStatus" value="active">
+            		稼働中
+        			<br>
+            		<input type="radio" name="operationalStatus" value="inactive">
+            		休止中
+
+					<label for="searchTerm" class="mr-2">最大容量(m<sup>3</sup>)</label>
+ 					<input type="text" id="searchTerm" name="maxStorageCapacity" class="form-control mr-2">
+					
+					<label for="searchTerm" class="mr-2">現在容量(m<sup>3</sup>)</label>
+ 					<input type="text" id="searchTerm" name="currentStorageCapacity" class="form-control mr-2">
+					
+					<label for="searchTerm" class="mr-2">備考</label>
+ 					<input type="text" id="searchTerm" name="notes" class="form-control mr-2">
+					
+ 					<button type="submit" class="btn btn-primary">登録</button>
+
+ 				</form>
+			
+			<a href="/admin/centerInfo" class="button">キャンセル</a>			
+			
+		</div>
+	</div>
+  </body>
+</html>
