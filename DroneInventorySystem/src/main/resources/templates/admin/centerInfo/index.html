@@ -22,7 +22,7 @@
 					<label for="searchTerm" class="mr-2"><u>検索条件</u></label>
 					
 					<label for="searchTerm" class="mr-2">センター名</label>
- 					<input type="text" id="searchTerm" name="centerName" class="form-control mr-2">
+					<input type="text" id="searchTerm" name="centerName" class="form-control mr-2" th:value="${CenterInfoForm.centerName}">
  					
  					&nbsp;
  					
@@ -31,16 +31,20 @@
 						 <option value="">選択してください</option>
 						 <option th:each="region : ${regions}" 
 						 	th:value="${region.name}" 
-						 	th:text="${region.name}"></option>
+						 	th:text="${region.name}"
+						 	th:selected="${region.name == CenterInfoForm.region}"
+						 	></option>
 					</select>
+					
+
 					
 					&nbsp;
 					
 					<!--追記-->
 					<label for="searchTerm" class="mr-2">現在容量</label>
-					<input type="text" id="searchTerm" name="storageCapacityFrom" class="form-control mr-2">
+					<input type="text" id="searchTerm" name="storageCapacityFrom" class="form-control mr-2" th:value="${CenterInfoForm.storageCapacityFrom}">
 					～
-					<input type="text" id="searchTerm" name="storageCapacityTo" class="form-control mr-2">
+					<input type="text" id="searchTerm" name="storageCapacityTo" class="form-control mr-2" th:value="${CenterInfoForm.storageCapacityTo}">
 					
  					<button type="submit" class="btn btn-primary">検索</button>
  				</form>

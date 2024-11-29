@@ -39,5 +39,9 @@ public class ErrorMessage {
 	// 不正な文字列を使用した検索に関するエラーメッセージ
 	public static final String STOCK_NOTNUMBER_INPUT_ERROR_MESSAGE = "amount.notNumber.input";
 			
+	// 不正な文字列を使用した検索に関するエラーメッセージ
+	public static final String STOCK_NOT_INPUT_AMOUNT_MESSAGE = "amount.not.input";
+	
+	public static final String STOCK_NOT_INPUT_MESSAGE = "updown.not.input";
 	
 }

@@ -52,11 +52,14 @@ public class CenterInfoController extends AbstractController
 	 * @return
 	 */
 	@GetMapping(UrlConsts.CENTER_INFO)
-	public String index(Model model) 
+	public String index(Model model,CenterInfoForm form) 
 	{
 
 		// ログの追加
         logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.LIST+"を開始します。");
+        
+        //検索条件保持の為
+        model.addAttribute("CenterInfoForm", form);
         
 		// 在庫センター情報画面に表示するデータを取得
 		List<CenterInfo> centerInfoList = centerInfoService.getCenterInfoData();
@@ -102,6 +105,9 @@ public class CenterInfoController extends AbstractController
 
 			// 都道府県プルダウン情報をセット
 			model.addAttribute("regions", regions);
+			
+			//検索条件保持の為
+	        model.addAttribute("CenterInfoForm", form);
 
 			return "admin/centerInfo/index";
 		}
@@ -110,11 +116,12 @@ public class CenterInfoController extends AbstractController
 		List<CenterInfo> centerInfoList = centerInfoService.getCenterInfoData(form.getCenterName(), form.getRegion(), form.getStorageCapacityFrom(),form.getStorageCapacityTo());
 		model.addAttribute("centerInfoList", centerInfoList);
 
+		model.addAttribute("CenterInfoForm", form);
+		
 		// 都道府県Enumをリストに変換→都道府県プルダウン情報をセット
 		List<Region> regions = Arrays.asList(Region.values());
 		model.addAttribute("regions", regions);
 
-		
 		// ログの追加
         logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.SEARCH+"を終了します。");
 		

@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.digitalojt.web.consts.FeatureName;
 import com.digitalojt.web.consts.ScreenName;
@@ -20,6 +19,7 @@ import com.digitalojt.web.entity.StockInfo;
 import com.digitalojt.web.form.StockInfoForm;
 import com.digitalojt.web.service.CategoryInfoService;
 import com.digitalojt.web.service.StockInfoService;
+import com.digitalojt.web.util.MessageManager;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -53,11 +53,14 @@ public class StockListController extends AbstractController
      * @return String(path)
      */
     @GetMapping(UrlConsts.STOCK_LIST)
-    public String index(Model model) 
+    public String index(Model model,StockInfoForm form) 
     {
         // ログの追加
         logger.info(ScreenName.STOCK+"の"+FeatureName.LIST+"を開始します。");
 
+        //検索条件保持の為の記述
+        model.addAttribute("StockInfoForm", form);
+                
         //一覧表示用
         List<StockInfo> stockInfoList = stockInfoService.getActiveStockInfoData();
         model.addAttribute("stockInfoList", stockInfoList);
@@ -85,20 +88,20 @@ public class StockListController extends AbstractController
      */
     @PostMapping(UrlConsts.STOCK_LIST_SEARCH)
     public String search(
-            @RequestParam(value = "category", required = false) String category,
-            @RequestParam(value = "name", required = false) String name,
-            @RequestParam(value = "amount", required = false) Integer amount,
-            @RequestParam(value = "than", required = false) String than,
+//            @RequestParam(value = "category", required = false) String category,
+//            @RequestParam(value = "name", required = false) String name,
+//            @RequestParam(value = "amount", required = false) Integer amount,
+//            @RequestParam(value = "than", required = false) String than,
             @Valid StockInfoForm form,BindingResult bindingResult, Model model) 
     {
         // ログの追加
         logger.info(ScreenName.STOCK + "の" + FeatureName.SEARCH + "を開始します。");
         
      // フォームにパラメータを設定
-        form.setCategory(category);
-        form.setName(name);
-        form.setAmount(amount);
-        form.setThan(than); 
+//        form.setCategory(category);
+//        form.setName(name);
+//        form.setAmount(amount);
+//        form.setThan(than); 
         model.addAttribute("StockInfoForm", form);
         
         // Valid項目チェック
@@ -120,11 +123,13 @@ public class StockListController extends AbstractController
             String errorMsg;
             if (bindingResult.hasFieldErrors()) 
             {
-                errorMsg = bindingResult.getFieldError().getDefaultMessage();
+            	// エラーメッセージをプロパティファイルから取得
+    			errorMsg = MessageManager.getMessage(messageSource, bindingResult.getGlobalError().getDefaultMessage());
+    			model.addAttribute("errorMsg", errorMsg);
             } 
             else if (bindingResult.getGlobalError() != null) 
             {
-                errorMsg = bindingResult.getGlobalError().getDefaultMessage();
+            	errorMsg = MessageManager.getMessage(messageSource, bindingResult.getGlobalError().getDefaultMessage());
             } 
             else 
             {

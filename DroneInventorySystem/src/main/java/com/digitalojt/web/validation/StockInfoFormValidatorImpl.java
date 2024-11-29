@@ -29,6 +29,22 @@ public class StockInfoFormValidatorImpl implements ConstraintValidator<StockInfo
 				form.getAmount()==null&&
 				StringUtils.isEmpty(form.getThan());
 
+		if(form.getAmount()==null&&!(StringUtils.isEmpty(form.getThan())))
+		{
+			context.disableDefaultConstraintViolation();
+			context.buildConstraintViolationWithTemplate(ErrorMessage.STOCK_NOT_INPUT_AMOUNT_MESSAGE)
+					.addConstraintViolation();
+			return false;
+		}
+		
+		if(form.getAmount()!=null&&(StringUtils.isEmpty(form.getThan())))
+		{
+			context.disableDefaultConstraintViolation();
+			context.buildConstraintViolationWithTemplate(ErrorMessage.STOCK_NOT_INPUT_MESSAGE)
+					.addConstraintViolation();
+			return false;
+		}
+		
 		// すべてのフィールドが空かをチェック
 		if (allFieldsEmpty) 
 		{
