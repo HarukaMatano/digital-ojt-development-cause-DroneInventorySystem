@@ -114,6 +114,7 @@ public class CenterInfoController extends AbstractController
 		List<Region> regions = Arrays.asList(Region.values());
 		model.addAttribute("regions", regions);
 
+		
 		// ログの追加
         logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.SEARCH+"を終了します。");
 		
@@ -127,20 +128,20 @@ public class CenterInfoController extends AbstractController
 	 * @param form
 	 * @return
 	 */
-	@PostMapping(UrlConsts.CENTER_REGISTER)
-	public String register(Model model, @Valid CenterInfoForm form, BindingResult bindingResult) 
-	{
-
-		// ログの追加
-        logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.REGISTER+"を開始します。");
-        		
-		
-
-		// ログの追加
-        logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.REGISTER+"を終了します。");
-		
-		return "admin/centerInfo/register";
-	}
+//	@PostMapping(UrlConsts.CENTER_REGISTER)
+//	public String register(Model model, @Valid CenterInfoForm form, BindingResult bindingResult) 
+//	{
+//
+//		// ログの追加
+//        logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.REGISTER+"を開始します。");
+//        		
+//		
+//
+//		// ログの追加
+//        logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.REGISTER+"を終了します。");
+//		
+//		return "admin/centerInfo/register";
+//	}
 	
 	/**
 	 * 更新
@@ -149,18 +150,18 @@ public class CenterInfoController extends AbstractController
 	 * @param form
 	 * @return
 	 */
-	@PostMapping(UrlConsts.CENTER_REGISTER)
-	public String update(Model model, @Valid CenterInfoForm form, BindingResult bindingResult) 
-	{
-
-		// ログの追加
-        logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.UPDATE+"を開始します。");
-        		
-		
-
-		// ログの追加
-        logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.UPDATE+"を終了します。");
-		
-		return "admin/centerInfo/register";
-	}
+//	@PostMapping(UrlConsts.CENTER_REGISTER)
+//	public String update(Model model, @Valid CenterInfoForm form, BindingResult bindingResult) 
+//	{
+//
+//		// ログの追加
+//        logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.UPDATE+"を開始します。");
+//        		
+//		
+//
+//		// ログの追加
+//        logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.UPDATE+"を終了します。");
+//		
+//		return "admin/centerInfo/register";
+//	}
 }

@@ -15,7 +15,8 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class StockInfoService {
+public class StockInfoService 
+{
 
 	// ロガーの追加
     private static final Logger logger = LoggerFactory.getLogger(StockListController.class);

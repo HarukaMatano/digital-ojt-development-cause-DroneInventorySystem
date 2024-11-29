@@ -20,7 +20,6 @@ import com.digitalojt.web.entity.StockInfo;
 import com.digitalojt.web.form.StockInfoForm;
 import com.digitalojt.web.service.CategoryInfoService;
 import com.digitalojt.web.service.StockInfoService;
-import com.digitalojt.web.util.MessageManager;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -90,7 +89,7 @@ public class StockListController extends AbstractController
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "amount", required = false) Integer amount,
             @RequestParam(value = "than", required = false) String than,
-            @Valid StockInfoForm form, Model model, BindingResult bindingResult) 
+            @Valid StockInfoForm form,BindingResult bindingResult, Model model) 
     {
         // ログの追加
         logger.info(ScreenName.STOCK + "の" + FeatureName.SEARCH + "を開始します。");
@@ -100,6 +99,7 @@ public class StockListController extends AbstractController
         form.setName(name);
         form.setAmount(amount);
         form.setThan(than); 
+        model.addAttribute("StockInfoForm", form);
         
         // Valid項目チェック
         if (bindingResult.hasErrors()) 
@@ -117,7 +117,20 @@ public class StockListController extends AbstractController
             model.addAttribute("stockInfoList", stockInfoList);
             
             // エラーメッセージをプロパティファイルから取得
-            String errorMsg = MessageManager.getMessage(messageSource, bindingResult.getGlobalError().getDefaultMessage());
+            String errorMsg;
+            if (bindingResult.hasFieldErrors()) 
+            {
+                errorMsg = bindingResult.getFieldError().getDefaultMessage();
+            } 
+            else if (bindingResult.getGlobalError() != null) 
+            {
+                errorMsg = bindingResult.getGlobalError().getDefaultMessage();
+            } 
+            else 
+            {
+                errorMsg = "Validation errors occurred";
+            }
+            
             model.addAttribute("errorMsg", errorMsg);
             
             return "admin/stockList/index";
