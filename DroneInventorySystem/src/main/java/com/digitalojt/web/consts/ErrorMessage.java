@@ -44,4 +44,7 @@ public class ErrorMessage {
 	
 	public static final String STOCK_NOT_INPUT_MESSAGE = "updown.not.input";
 	
+	public static final String STOCK_SEARCH_NOT_RESULT_MESSAGE = "stock.not.result";
+	
+	public static final String CENTER_SEARCH_NOT_RESULT_MESSAGE = "center.not.result";
 }

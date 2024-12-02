@@ -1,6 +1,7 @@
 package com.digitalojt.web.controller;
 
 import java.util.List;
+import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.digitalojt.web.consts.ErrorMessage;
 import com.digitalojt.web.consts.FeatureName;
 import com.digitalojt.web.consts.ScreenName;
 import com.digitalojt.web.consts.UrlConsts;
@@ -61,17 +63,19 @@ public class StockListController extends AbstractController
         //検索条件保持の為の記述
         model.addAttribute("StockInfoForm", form);
                 
-        //一覧表示用
-        List<StockInfo> stockInfoList = stockInfoService.getActiveStockInfoData();
-        model.addAttribute("stockInfoList", stockInfoList);
+//        //一覧表示用
+//        List<StockInfo> stockInfoList = stockInfoService.getActiveStockInfoData();
+//        model.addAttribute("stockInfoList", stockInfoList);
+//        
+//        //検索条件の表示(分類情報)
+//        List<CategoryInfo> categoryInfoList=categoryInfoService.getCategoryInfoData();
+//        model.addAttribute("categoryInfoList", categoryInfoList);
+//
+//        //検索条件の表示(名称情報)
+//        List<StockInfo> stockInfoListSearch = stockInfoService.getActiveStockInfoData();
+//        model.addAttribute("stockInfoListSearch", stockInfoListSearch);
         
-        //検索条件の表示(分類情報)
-        List<CategoryInfo> categoryInfoList=categoryInfoService.getCategoryInfoData();
-        model.addAttribute("categoryInfoList", categoryInfoList);
-
-        //検索条件の表示(名称情報)
-        List<StockInfo> stockInfoListSearch = stockInfoService.getActiveStockInfoData();
-        model.addAttribute("stockInfoListSearch", stockInfoListSearch);
+        addCommonAttributes(model);
         
         // ログの追加
         logger.info(ScreenName.STOCK+"の"+FeatureName.LIST+"を終了します。");
@@ -107,17 +111,19 @@ public class StockListController extends AbstractController
         // Valid項目チェック
         if (bindingResult.hasErrors()) 
         { 
-        	//検索条件の表示(分類情報)
-            List<CategoryInfo> categoryInfoList=categoryInfoService.getCategoryInfoData();
-            model.addAttribute("categoryInfoList", categoryInfoList);
-            
-            //検索条件の表示(名称情報)
-            List<StockInfo> stockInfoListSearch = stockInfoService.getActiveStockInfoData();
-            model.addAttribute("stockInfoListSearch", stockInfoListSearch);
-            
-            //一覧表示
-            List<StockInfo> stockInfoList = stockInfoService.getActiveStockInfoData();
-            model.addAttribute("stockInfoList", stockInfoList);
+//        	//検索条件の表示(分類情報)
+//            List<CategoryInfo> categoryInfoList=categoryInfoService.getCategoryInfoData();
+//            model.addAttribute("categoryInfoList", categoryInfoList);
+//            
+//            //検索条件の表示(名称情報)
+//            List<StockInfo> stockInfoListSearch = stockInfoService.getActiveStockInfoData();
+//            model.addAttribute("stockInfoListSearch", stockInfoListSearch);
+//            
+//            //一覧表示
+//            List<StockInfo> stockInfoList = stockInfoService.getActiveStockInfoData();
+//            model.addAttribute("stockInfoList", stockInfoList);
+        	
+        	addCommonAttributes(model);
             
             // エラーメッセージをプロパティファイルから取得
             String errorMsg;
@@ -140,15 +146,15 @@ public class StockListController extends AbstractController
             
             return "admin/stockList/index";
         }
-               
-        
+                       
         // 検索条件に基づいてセンター情報を取得
         List<StockInfo> stockInfoList = stockInfoService.searchStockInfo(form);
         model.addAttribute("stockInfoList", stockInfoList);
         
         if (stockInfoList.isEmpty()) 
         {
-            model.addAttribute("errorMsg", "該当する在庫情報が見つかりませんでした。");
+            String errorMsg = messageSource.getMessage(ErrorMessage.STOCK_SEARCH_NOT_RESULT_MESSAGE, null, Locale.getDefault());
+            model.addAttribute("errorMsg", errorMsg);
         }
         
         // 検索条件の表示(分類情報)
@@ -163,5 +169,17 @@ public class StockListController extends AbstractController
         logger.info(ScreenName.STOCK + "の" + FeatureName.SEARCH + "を終了します。");
 
         return "admin/stockList/index";
+    }
+    
+    private void addCommonAttributes(Model model) 
+    {
+        List<CategoryInfo> categoryInfoList = categoryInfoService.getCategoryInfoData();
+        model.addAttribute("categoryInfoList", categoryInfoList);
+
+        List<StockInfo> stockInfoListSearch = stockInfoService.getActiveStockInfoData();
+        model.addAttribute("stockInfoListSearch", stockInfoListSearch);
+
+        List<StockInfo> stockInfoList = stockInfoService.getActiveStockInfoData();
+        model.addAttribute("stockInfoList", stockInfoList);
     }
 }

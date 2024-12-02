@@ -42,9 +42,9 @@
 					
 					<!--追記-->
 					<label for="searchTerm" class="mr-2">現在容量</label>
-					<input type="text" id="searchTerm" name="storageCapacityFrom" class="form-control mr-2" th:value="${CenterInfoForm.storageCapacityFrom}">
+					<input type="number" id="searchTerm" name="storageCapacityFrom" class="form-control mr-2" th:value="${CenterInfoForm.storageCapacityFrom}">
 					～
-					<input type="text" id="searchTerm" name="storageCapacityTo" class="form-control mr-2" th:value="${CenterInfoForm.storageCapacityTo}">
+					<input type="number" id="searchTerm" name="storageCapacityTo" class="form-control mr-2" th:value="${CenterInfoForm.storageCapacityTo}">
 					
  					<button type="submit" class="btn btn-primary">検索</button>
  				</form>

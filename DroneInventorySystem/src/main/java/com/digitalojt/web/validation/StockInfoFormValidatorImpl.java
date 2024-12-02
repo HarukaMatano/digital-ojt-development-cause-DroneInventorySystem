@@ -14,7 +14,8 @@ import jakarta.validation.ConstraintValidatorContext;
  * 
  * @author haruka matano
  */
-public class StockInfoFormValidatorImpl implements ConstraintValidator<StockInfoFormValidator, StockInfoForm> {
+public class StockInfoFormValidatorImpl implements ConstraintValidator<StockInfoFormValidator, StockInfoForm> 
+{
 
 	/**
 	 * バリデーションチェック
@@ -23,13 +24,15 @@ public class StockInfoFormValidatorImpl implements ConstraintValidator<StockInfo
 	public boolean isValid(StockInfoForm form, ConstraintValidatorContext context) 
 	{
 
-		boolean allFieldsEmpty = 
-				StringUtils.isEmpty(form.getCategory()) &&
-				StringUtils.isEmpty(form.getName()) &&
-				form.getAmount()==null&&
-				StringUtils.isEmpty(form.getThan());
+//		boolean allFieldsEmpty = 
+//				StringUtils.isEmpty(form.getCategory()) &&
+//				StringUtils.isEmpty(form.getName()) &&
+//				form.getAmount()==null&&
+//				StringUtils.isEmpty(form.getThan());
 
-		if(form.getAmount()==null&&!(StringUtils.isEmpty(form.getThan())))
+				
+//		if(form.getAmount()==null&&!(StringUtils.isEmpty(form.getThan())))
+		if (form.getAmount() == null && !StringUtils.isEmpty(form.getThan()))
 		{
 			context.disableDefaultConstraintViolation();
 			context.buildConstraintViolationWithTemplate(ErrorMessage.STOCK_NOT_INPUT_AMOUNT_MESSAGE)
@@ -46,7 +49,8 @@ public class StockInfoFormValidatorImpl implements ConstraintValidator<StockInfo
 		}
 		
 		// すべてのフィールドが空かをチェック
-		if (allFieldsEmpty) 
+//		if (allFieldsEmpty) 
+		if (isAllFieldsEmpty(form))
 		{
 			context.disableDefaultConstraintViolation();
 			context.buildConstraintViolationWithTemplate(ErrorMessage.ALL_FIELDS_EMPTY_ERROR_MESSAGE)
@@ -56,7 +60,8 @@ public class StockInfoFormValidatorImpl implements ConstraintValidator<StockInfo
 
 
 		// 個数のチェック
-		if (form.getAmount() != null) 
+//		if (form.getAmount() != null)
+		if (form.getAmount() != null && !isHalfWidthDigit(form.getAmount().toString()))
 		{
 
 			// 不正文字列チェック(半角文字列でない場合はバリデーション対象の為コメントアウトしました。)
@@ -69,7 +74,7 @@ public class StockInfoFormValidatorImpl implements ConstraintValidator<StockInfo
 //			}
 			
  		    // 半角数字チェック
-			if (!ParmCheckUtil.isHalfWidthDigit(form.getAmount().toString())) 
+			if (isHalfWidthDigit(form.getAmount().toString())) 
 			{
                 context.disableDefaultConstraintViolation();
                 context.buildConstraintViolationWithTemplate(ErrorMessage.STOCK_NOTNUMBER_INPUT_ERROR_MESSAGE)
@@ -82,4 +87,21 @@ public class StockInfoFormValidatorImpl implements ConstraintValidator<StockInfo
 		// その他のバリデーションに問題なければtrueを返す
 		return true;
 	}
+	
+	
+	//メソッド
+	private boolean isAllFieldsEmpty(StockInfoForm form) 
+	{
+		return StringUtils.isEmpty(form.getCategory()) &&
+		StringUtils.isEmpty(form.getName()) &&
+		form.getAmount() == null &&
+		StringUtils.isEmpty(form.getThan());
+	}
+	
+	private boolean isHalfWidthDigit(String value) 
+	{
+		return ParmCheckUtil.isHalfWidthDigit(value);
+	}
 }
+
+

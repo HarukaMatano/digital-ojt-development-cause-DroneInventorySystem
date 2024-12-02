@@ -2,6 +2,7 @@ package com.digitalojt.web.controller;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.digitalojt.web.consts.ErrorMessage;
 import com.digitalojt.web.consts.FeatureName;
 import com.digitalojt.web.consts.Region;
 import com.digitalojt.web.consts.ScreenName;
@@ -115,6 +117,12 @@ public class CenterInfoController extends AbstractController
 		// 在庫センター情報画面に表示するデータを取得→画面表示用に商品情報リストをセット
 		List<CenterInfo> centerInfoList = centerInfoService.getCenterInfoData(form.getCenterName(), form.getRegion(), form.getStorageCapacityFrom(),form.getStorageCapacityTo());
 		model.addAttribute("centerInfoList", centerInfoList);
+		
+		if (centerInfoList.isEmpty()) 
+        {
+            String errorMsg = messageSource.getMessage(ErrorMessage.CENTER_SEARCH_NOT_RESULT_MESSAGE, null, Locale.getDefault());
+            model.addAttribute("errorMsg", errorMsg);
+        }
 
 		model.addAttribute("CenterInfoForm", form);
 		
