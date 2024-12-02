@@ -179,4 +179,5 @@ public class CenterInfoController extends AbstractController
 //		
 //		return "admin/centerInfo/register";
 //	}
+	
 }

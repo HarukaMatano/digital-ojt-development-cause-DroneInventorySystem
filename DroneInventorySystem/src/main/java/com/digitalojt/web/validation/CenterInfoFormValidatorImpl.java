@@ -21,7 +21,8 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
 	 * バリデーションチェック
 	 */
 	@Override
-	public boolean isValid(CenterInfoForm form, ConstraintValidatorContext context) {
+	public boolean isValid(CenterInfoForm form, ConstraintValidatorContext context) 
+	{
 
 		boolean allFieldsEmpty = 
 				StringUtils.isEmpty(form.getCenterName()) &&
@@ -33,7 +34,6 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
 		// すべてのフィールドが空かをチェック
 		if (allFieldsEmpty) 
 		{
-			System.out.println("フィールドは空です。"); 
 			context.disableDefaultConstraintViolation();
 			context.buildConstraintViolationWithTemplate(ErrorMessage.ALL_FIELDS_EMPTY_ERROR_MESSAGE)
 					.addConstraintViolation();
@@ -46,7 +46,8 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
 		{
 
 			// 不正文字列チェック
-			if (ParmCheckUtil.isParameterInvalid(form.getCenterName())) {
+			if (ParmCheckUtil.isParameterInvalid(form.getCenterName())) 
+			{
 				context.disableDefaultConstraintViolation();
 				context.buildConstraintViolationWithTemplate(ErrorMessage.INVALID_INPUT_ERROR_MESSAGE)
 						.addConstraintViolation();
@@ -64,10 +65,12 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
 		}
 
 		// 都道府県のチェック
-		if (form.getRegion() != null) {
+		if (form.getRegion() != null) 
+		{
 
 			// 不正文字列チェック
-			if (ParmCheckUtil.isParameterInvalid(form.getRegion())) {
+			if (ParmCheckUtil.isParameterInvalid(form.getRegion())) 
+			{
 				context.disableDefaultConstraintViolation();
 				context.buildConstraintViolationWithTemplate(ErrorMessage.INVALID_INPUT_ERROR_MESSAGE)
 						.addConstraintViolation();
@@ -104,6 +107,14 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
 	                    .addConstraintViolation();
 	            return false;
 	        }
+	    }
+	    
+	    if(form.getStorageCapacityFrom()>form.getStorageCapacityTo())
+	    {
+	    	context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(ErrorMessage.CENTER_SEARCH_UPDOWN_INVALID_MESSAGE)
+                    .addConstraintViolation();
+            return false;
 	    }
 		
 
