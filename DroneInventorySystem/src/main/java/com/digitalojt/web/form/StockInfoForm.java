@@ -19,15 +19,11 @@ import lombok.Setter;
 @Setter
 public class StockInfoForm 
 {
-//	@NotEmpty(message = "Not Empty Category")
 	private String category;
 	
-//	@NotEmpty(message = "Not Empty Name")
     private String name;
 	
-//	@NotNull(message = "Not Empty Amount")
     private Integer amount;
 	
-//	@NotEmpty(message = "Not Empty Than")
     private String than;
 }

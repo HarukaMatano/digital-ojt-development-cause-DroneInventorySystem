@@ -23,15 +23,7 @@ public class StockInfoFormValidatorImpl implements ConstraintValidator<StockInfo
 	@Override
 	public boolean isValid(StockInfoForm form, ConstraintValidatorContext context) 
 	{
-
-//		boolean allFieldsEmpty = 
-//				StringUtils.isEmpty(form.getCategory()) &&
-//				StringUtils.isEmpty(form.getName()) &&
-//				form.getAmount()==null&&
-//				StringUtils.isEmpty(form.getThan());
-
 				
-//		if(form.getAmount()==null&&!(StringUtils.isEmpty(form.getThan())))
 		if (form.getAmount() == null && !StringUtils.isEmpty(form.getThan()))
 		{
 			context.disableDefaultConstraintViolation();
@@ -49,7 +41,6 @@ public class StockInfoFormValidatorImpl implements ConstraintValidator<StockInfo
 		}
 		
 		// すべてのフィールドが空かをチェック
-//		if (allFieldsEmpty) 
 		if (isAllFieldsEmpty(form))
 		{
 			context.disableDefaultConstraintViolation();
@@ -60,19 +51,8 @@ public class StockInfoFormValidatorImpl implements ConstraintValidator<StockInfo
 
 
 		// 個数のチェック
-//		if (form.getAmount() != null)
 		if (form.getAmount() != null && !isHalfWidthDigit(form.getAmount().toString()))
-		{
-
-			// 不正文字列チェック(半角文字列でない場合はバリデーション対象の為コメントアウトしました。)
-//			if (ParmCheckUtil.isParameterInvalid(form.getAmount())) 
-//			{
-//				context.disableDefaultConstraintViolation();
-//				context.buildConstraintViolationWithTemplate(ErrorMessage.INVALID_INPUT_ERROR_MESSAGE)
-//				.addConstraintViolation();
-//			return false;
-//			}
-			
+		{			
  		    // 半角数字チェック
 			if (isHalfWidthDigit(form.getAmount().toString())) 
 			{
@@ -90,6 +70,7 @@ public class StockInfoFormValidatorImpl implements ConstraintValidator<StockInfo
 	
 	
 	//メソッド
+	//全ての項目が空欄かどうかの論理
 	private boolean isAllFieldsEmpty(StockInfoForm form) 
 	{
 		return StringUtils.isEmpty(form.getCategory()) &&
@@ -98,6 +79,7 @@ public class StockInfoFormValidatorImpl implements ConstraintValidator<StockInfo
 		StringUtils.isEmpty(form.getThan());
 	}
 	
+	//半角数字かどうかの論理
 	private boolean isHalfWidthDigit(String value) 
 	{
 		return ParmCheckUtil.isHalfWidthDigit(value);

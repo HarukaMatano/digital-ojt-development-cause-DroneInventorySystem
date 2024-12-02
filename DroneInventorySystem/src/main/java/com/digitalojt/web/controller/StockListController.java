@@ -62,18 +62,6 @@ public class StockListController extends AbstractController
 
         //検索条件保持の為の記述
         model.addAttribute("StockInfoForm", form);
-                
-//        //一覧表示用
-//        List<StockInfo> stockInfoList = stockInfoService.getActiveStockInfoData();
-//        model.addAttribute("stockInfoList", stockInfoList);
-//        
-//        //検索条件の表示(分類情報)
-//        List<CategoryInfo> categoryInfoList=categoryInfoService.getCategoryInfoData();
-//        model.addAttribute("categoryInfoList", categoryInfoList);
-//
-//        //検索条件の表示(名称情報)
-//        List<StockInfo> stockInfoListSearch = stockInfoService.getActiveStockInfoData();
-//        model.addAttribute("stockInfoListSearch", stockInfoListSearch);
         
         addCommonAttributes(model);
         
@@ -92,37 +80,16 @@ public class StockListController extends AbstractController
      */
     @PostMapping(UrlConsts.STOCK_LIST_SEARCH)
     public String search(
-//            @RequestParam(value = "category", required = false) String category,
-//            @RequestParam(value = "name", required = false) String name,
-//            @RequestParam(value = "amount", required = false) Integer amount,
-//            @RequestParam(value = "than", required = false) String than,
             @Valid StockInfoForm form,BindingResult bindingResult, Model model) 
     {
         // ログの追加
         logger.info(ScreenName.STOCK + "の" + FeatureName.SEARCH + "を開始します。");
         
-     // フォームにパラメータを設定
-//        form.setCategory(category);
-//        form.setName(name);
-//        form.setAmount(amount);
-//        form.setThan(than); 
         model.addAttribute("StockInfoForm", form);
         
         // Valid項目チェック
         if (bindingResult.hasErrors()) 
         { 
-//        	//検索条件の表示(分類情報)
-//            List<CategoryInfo> categoryInfoList=categoryInfoService.getCategoryInfoData();
-//            model.addAttribute("categoryInfoList", categoryInfoList);
-//            
-//            //検索条件の表示(名称情報)
-//            List<StockInfo> stockInfoListSearch = stockInfoService.getActiveStockInfoData();
-//            model.addAttribute("stockInfoListSearch", stockInfoListSearch);
-//            
-//            //一覧表示
-//            List<StockInfo> stockInfoList = stockInfoService.getActiveStockInfoData();
-//            model.addAttribute("stockInfoList", stockInfoList);
-        	
         	addCommonAttributes(model);
             
             // エラーメッセージをプロパティファイルから取得
@@ -171,6 +138,7 @@ public class StockListController extends AbstractController
         return "admin/stockList/index";
     }
     
+    //検索機能のプルダウン及び一覧の表示
     private void addCommonAttributes(Model model) 
     {
         List<CategoryInfo> categoryInfoList = categoryInfoService.getCategoryInfoData();
