@@ -143,41 +143,12 @@ public class CenterInfoController extends AbstractController
 	 * @param form
 	 * @return
 	 */
-//	@PostMapping(UrlConsts.CENTER_REGISTER)
-//	public String register(Model model, @Valid CenterInfoForm form, BindingResult bindingResult) 
-//	{
-//
-//		// ログの追加
-//        logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.REGISTER+"を開始します。");
-//        		
-//		
-//
-//		// ログの追加
-//        logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.REGISTER+"を終了します。");
-//		
-//		return "admin/centerInfo/register";
-//	}
-	
-	/**
-	 * 更新
-	 * 
-	 * @param model
-	 * @param form
-	 * @return
-	 */
-//	@PostMapping(UrlConsts.CENTER_REGISTER)
-//	public String update(Model model, @Valid CenterInfoForm form, BindingResult bindingResult) 
-//	{
-//
-//		// ログの追加
-//        logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.UPDATE+"を開始します。");
-//        		
-//		
-//
-//		// ログの追加
-//        logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.UPDATE+"を終了します。");
-//		
-//		return "admin/centerInfo/register";
-//	}
+	//新規登録画面移動
+	@GetMapping(UrlConsts.CENTER_REGISTER)
+    public String showCreateForm(Model model,CenterInfoForm form) 
+    {
+        model.addAttribute("CenterInfoForm", form);
+        return "admin/centerInfo/register"; 
+    }
 	
 }
