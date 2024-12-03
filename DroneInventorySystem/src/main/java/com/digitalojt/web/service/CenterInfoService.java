@@ -1,10 +1,13 @@
 package com.digitalojt.web.service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.digitalojt.web.entity.CenterInfo;
+import com.digitalojt.web.form.CenterInfoForm;
 import com.digitalojt.web.repository.CenterInfoRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -17,7 +20,8 @@ import lombok.RequiredArgsConstructor;
  */
 @Service
 @RequiredArgsConstructor
-public class CenterInfoService {
+public class CenterInfoService 
+{
 
 	/** センター情報テーブル リポジトリー */
 	private final CenterInfoRepository repository;
@@ -49,9 +53,29 @@ public class CenterInfoService {
 	{
 		// 検索処理
 		List<CenterInfo> centerInfoList = repository.findByCenterNameAndRegionAndStorageCapacity(centerName, region, storageCapacityFrom, storageCapacityTo);
-
+		
 		return centerInfoList;
 	}
+	
+	//登録
+	public void register(CenterInfoForm form) 
+    {
+        CenterInfo centerInfo = new CenterInfo();
+        centerInfo.setCenterName(form.getCenterName());
+        centerInfo.setPostCode(form.getPostCode());
+        centerInfo.setAddress(form.getAddress());
+        centerInfo.setPhoneNumber(form.getPhoneNumber());
+        centerInfo.setManagerName(form.getManagerName());
+        centerInfo.setOperationalStatus(form.getOperationalStatus());
+        centerInfo.setMaxStorageCapacity(String.valueOf(form.getMaxStorageCapacity()));
+        centerInfo.setCurrentStorageCapacity(String.valueOf(form.getCurrentStorageCapacity()));
+        centerInfo.setNotes(form.getNotes());
+        centerInfo.setCreateDate(Timestamp.valueOf(LocalDateTime.now()));
+        centerInfo.setUpdateDate(Timestamp.valueOf(LocalDateTime.now()));
+        centerInfo.setDeleteFlag("0");
+        
+        repository.save(centerInfo); // データベースに保存
+    }
 
 }
 

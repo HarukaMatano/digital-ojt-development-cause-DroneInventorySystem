@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.digitalojt.web.consts.ErrorMessage;
@@ -95,6 +96,7 @@ public class CenterInfoController extends AbstractController
 		// ログの追加
         logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.SEARCH+"を開始します。");
         		
+        
 		// Valid項目チェック
 		if (bindingResult.hasErrors()) 
 		{
@@ -147,8 +149,34 @@ public class CenterInfoController extends AbstractController
 	@GetMapping(UrlConsts.CENTER_REGISTER)
     public String showCreateForm(Model model,CenterInfoForm form) 
     {
+		// ログの追加
+        logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.REGISTER+"を開始します。");
+        
         model.addAttribute("CenterInfoForm", form);
         return "admin/centerInfo/register"; 
     }
+	
+	//新規登録処理
+	@PostMapping(UrlConsts.CENTER_REGISTERED)
+    public String register(@ModelAttribute @Valid CenterInfoForm form,BindingResult bindingResult,Model model) 
+    {	
+		
+		if (bindingResult.hasErrors()) 
+		{
+			String errorMsg = MessageManager.getMessage(messageSource, bindingResult.getGlobalError().getDefaultMessage());
+			model.addAttribute("errorMsg", errorMsg);
+			model.addAttribute("CenterInfoForm", form);
+	        // バリデーションエラーがある場合、エラーメッセージを表示する画面にリダイレクト
+	        return "admin/centerInfo/register";
+	    }
+		
+		centerInfoService.register(form);
+		// ログの追加
+        logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.REGISTER+"を終了します。");
+        return "redirect:/admin/centerInfo"; // 登録後に一覧画面にリダイレクト
+    }
+	
+	//更新画面移動
+
 	
 }

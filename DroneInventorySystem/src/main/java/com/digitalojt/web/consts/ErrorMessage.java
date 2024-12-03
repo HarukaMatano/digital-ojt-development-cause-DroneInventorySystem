@@ -50,4 +50,7 @@ public class ErrorMessage {
 	
 	public static final String CENTER_SEARCH_UPDOWN_INVALID_MESSAGE = "center.invalid.updown";
 	
+	public static final String CENTER_REGISTER_UPDOWN_INVALID_MESSAGE = "center.invalid.updown.register";
+	
+	public static final String CENTER_REGISTER_MAST = "center.mast";
 }

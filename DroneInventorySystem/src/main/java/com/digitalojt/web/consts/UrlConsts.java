@@ -28,11 +28,17 @@ public class UrlConsts {
 	
 	// 在庫センター情報画面 登録
 	public static final String CENTER_REGISTER = "/admin/centerInfo/register";
+	
+	// 在庫センター情報画面 登録後
+		public static final String CENTER_REGISTERED = "/admin/centerInfo/register/after";
 
 	// 在庫センター情報画面 更新
 	public static final String CENTER_UPDATE = "/admin/centerInfo/update";
-		
+	
 	// 在庫センター情報画面 更新
+		public static final String CENTER_UPDATED = "/admin/centerInfo/update/after";
+		
+	// 在庫センター情報画面 削除
 	public static final String CENTER_DELETE = "/admin/centerInfo/delete";
 
 	// 認証不要画面

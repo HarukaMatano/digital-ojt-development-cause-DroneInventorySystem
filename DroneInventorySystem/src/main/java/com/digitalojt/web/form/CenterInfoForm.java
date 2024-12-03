@@ -34,14 +34,17 @@ public class CenterInfoForm
 	 */
 	private Integer storageCapacityTo;
 	
-	private int centerId;
+	
+	private Integer centerId;
 	private String postCode;
 	private String address;
 	private String phoneNumber;
 	private String managerName;
-	private int operationalStatus;
-	private String maxStorageCapacity;
-	private String currentStorageCapacity;
+	private Integer operationalStatus;
+	private Integer maxStorageCapacity;
+	private Integer currentStorageCapacity;
 	private String notes;
+	
+	
 	
 }
