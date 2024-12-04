@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.digitalojt.web.consts.ErrorMessage;
@@ -57,7 +58,6 @@ public class CenterInfoController extends AbstractController
 	@GetMapping(UrlConsts.CENTER_INFO)
 	public String index(Model model,CenterInfoForm form) 
 	{
-
 		// ログの追加
         logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.LIST+"を開始します。");
         
@@ -160,7 +160,6 @@ public class CenterInfoController extends AbstractController
 	@PostMapping(UrlConsts.CENTER_REGISTERED)
     public String register(@ModelAttribute @Valid CenterInfoForm form,BindingResult bindingResult,Model model) 
     {	
-		
 		if (bindingResult.hasErrors()) 
 		{
 			String errorMsg = MessageManager.getMessage(messageSource, bindingResult.getGlobalError().getDefaultMessage());
@@ -168,8 +167,7 @@ public class CenterInfoController extends AbstractController
 			model.addAttribute("CenterInfoForm", form);
 	        // バリデーションエラーがある場合、エラーメッセージを表示する画面にリダイレクト
 	        return "admin/centerInfo/register";
-	    }
-		
+	    }		
 		centerInfoService.register(form);
 		// ログの追加
         logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.REGISTER+"を終了します。");
@@ -177,6 +175,59 @@ public class CenterInfoController extends AbstractController
     }
 	
 	//更新画面移動
-
+	@GetMapping(UrlConsts.CENTER_UPDATE)
+    public String showUpdateForm(@PathVariable("id") Long id, Model model,CenterInfoForm form) 
+    {
+		// ログの追加
+        logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.UPDATE+"を開始します。");
+		
+        CenterInfo centerInfo = centerInfoService.getCenterInfoDataById(id);
+        form.setCenterId(centerInfo.getCenterId());
+        form.setCenterName(centerInfo.getCenterName());
+        form.setPostCode(centerInfo.getPostCode());
+        form.setAddress(centerInfo.getAddress());
+        form.setPhoneNumber(centerInfo.getPhoneNumber());
+        form.setManagerName(centerInfo.getManagerName());
+        form.setOperationalStatus(centerInfo.getOperationalStatus());
+        form.setMaxStorageCapacity(Integer.parseInt(centerInfo.getMaxStorageCapacity()));
+        form.setCurrentStorageCapacity(Integer.parseInt(centerInfo.getCurrentStorageCapacity()));
+        form.setNotes(centerInfo.getNotes());
+        
+        model.addAttribute("CenterInfoForm", form);
+        return "admin/centerInfo/register"; 
+    }
+	
+	//更新処理
+	@PostMapping(UrlConsts.CENTER_UPDATED)
+    public String update(@ModelAttribute CenterInfoForm form) 
+    {
+		System.out.println("ID:"+form.getCenterId());
+		System.out.println("NAME:"+form.getCenterName());
+		System.out.println("POST:"+form.getPostCode());
+		
+        centerInfoService.update(form);
+        
+     // ログの追加
+        logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.UPDATE+"を終了します。");
+        return "redirect:/admin/centerInfo";  // 更新後に一覧画面にリダイレクト
+    }
+	
+	//削除確認画面移動
+	@GetMapping(UrlConsts.CENTER_DELETE)
+    public String deleteCheckForm(@ModelAttribute CenterInfoForm form) 
+    {
+		System.out.println(form.getCenterName());
+		return "admin/centerInfo/delete"; 
+    }
+	
+	//削除処理
+//	@GetMapping(UrlConsts.CENTER_DELETE)
+//	public String deletedForm(@PathVariable("id") Long id, Model model,CenterInfoForm form) 
+//	{
+//	     centerInfoService.delete(form);
+//	     return "redirect:/admin/centerInfo"; 
+//	}
+	
+	
 	
 }

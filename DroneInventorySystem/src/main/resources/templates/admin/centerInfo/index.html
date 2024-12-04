@@ -72,7 +72,7 @@
 					</thead>
 					<tbody>
 						<tr th:each="item : ${centerInfoList}">
-							<td> [[${item.centerName}]] </td>
+							<td><a th:href="@{'/admin/centerInfo/update/' + ${item.centerId}}">[[${item.centerName}]]</a></td>
 							<td> [[${item.address}]] </td>
 							<td> [[${item.phoneNumber}]] </td>
 							<td> [[${item.managerName}]] </td>

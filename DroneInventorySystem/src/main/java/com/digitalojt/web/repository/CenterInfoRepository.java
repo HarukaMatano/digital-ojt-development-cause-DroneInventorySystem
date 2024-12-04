@@ -16,7 +16,7 @@ import com.digitalojt.web.entity.CenterInfo;
  */
 @Repository
 public interface CenterInfoRepository extends JpaRepository<CenterInfo, Integer> {
-
+	
 	/**
 	 * 引数に合致する在庫センター情報を取得
 	 * 
@@ -39,4 +39,14 @@ public interface CenterInfoRepository extends JpaRepository<CenterInfo, Integer>
 			Integer storageCapacityFrom,
 			Integer storageCapacityTo
 	);
+
+	@Query("SELECT s FROM CenterInfo s WHERE " +
+			"(s.deleteFlag='0') AND " +
+			"(s.operationalStatus = 0)")
+	List<CenterInfo> findByOperrationalStatusAndDeleteFlag();
+	
+	CenterInfo findByCenterId(Integer centerId);
+
+	CenterInfo findByCenterId(Long id);
+	
 }

@@ -33,13 +33,16 @@ public class UrlConsts {
 		public static final String CENTER_REGISTERED = "/admin/centerInfo/register/after";
 
 	// 在庫センター情報画面 更新
-	public static final String CENTER_UPDATE = "/admin/centerInfo/update";
+	public static final String CENTER_UPDATE = "/admin/centerInfo/update/{id}";
 	
 	// 在庫センター情報画面 更新
 		public static final String CENTER_UPDATED = "/admin/centerInfo/update/after";
 		
 	// 在庫センター情報画面 削除
-	public static final String CENTER_DELETE = "/admin/centerInfo/delete";
+	public static final String CENTER_DELETE = "/admin/centerInfo/update/delete";
+	
+	// 在庫センター情報画面 削除
+	public static final String CENTER_DELETED = "/admin/centerInfo/update/deleted";
 
 	// 認証不要画面
 	public static final String[] NO_AUTHENTICATION = {LOGIN, AUTHENTICATE};

@@ -62,11 +62,15 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
 	//検索バリデーション
 	private boolean areSearchFieldsEmpty(CenterInfoForm form, ConstraintValidatorContext context) 
 	{
+		System.out.println("検索バリデーション開始");
+		
 		boolean allFieldsEmpty = 
 	            StringUtils.isEmpty(form.getCenterName()) &&
 	            StringUtils.isEmpty(form.getRegion()) &&
 	            form.getStorageCapacityFrom() == null &&
 	            form.getStorageCapacityTo() == null;
+		
+		System.out.println("allFieldsEmpty:"+allFieldsEmpty);
 		
 		if (allFieldsEmpty) 
 	    {
@@ -79,7 +83,7 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
 		// センター名のチェック
  		if (form.getCenterName() != null) 
  		{
- 			if(!(validateStringField(form.getCenterName(), context))){return false;}
+ 			if(validateStringField(form.getCenterName(), context)){return false;}
  		}
 
  		// 都道府県のチェック
@@ -136,13 +140,15 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
  	            return false;
  		    }
  	    }
-		
+ 	   System.out.println("検索バリデーション終了");
 		return true;
 	}
 	
 	//登録バリデーション
 	private boolean areRegisterFieldsEmpty(CenterInfoForm form, ConstraintValidatorContext context) 
 	{
+		System.out.println("登録バリデーション開始");
+		
 		boolean allFieldsEmptyRegister = 
 	            StringUtils.isEmpty(form.getCenterName()) ||
 	            StringUtils.isEmpty(form.getPostCode()) ||
@@ -153,6 +159,8 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
 	            form.getMaxStorageCapacity() == null ||
 	            form.getCurrentStorageCapacity() == null;
 
+		System.out.println("allFieldsEmptyRegister:"+allFieldsEmptyRegister);
+		
 		 if (allFieldsEmptyRegister) 
 		 {
 		      context.disableDefaultConstraintViolation();
@@ -164,33 +172,33 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
 			//センター名のチェック
 		 		if (form.getCenterName()!= null) 
 		 		{
-		 			if(!(validateStringField(form.getCenterName(), context)))
+		 			if(validateStringField(form.getCenterName(), context))
 		 			{return false;}
 		 		}
 	     	//郵便番号のチェック
 	     	  	 		if (form.getPostCode()!= null) 
 	     	  	 		{
-	     	  	 			if(!(validateStringField(form.getPostCode(), context)))
+	     	  	 			if(validateStringField(form.getPostCode(), context))
 	     	  	 			{return false;}
 	     	  	 		}
 	     	  	    
 	     	  	  //住所のチェック
 	     	  	 		if (form.getAddress()!= null) 
 	     	  	 		{
-	     	  	 			if(!(validateStringField(form.getAddress(), context)))
+	     	  	 			if(validateStringField(form.getAddress(), context))
 	     	  	 			{return false;}
 	     	  	 		}
 	     	  	 		
 	     	  	  //電話番号
 	     	  	 		if (form.getPhoneNumber()!= null) 
 	     	  	 		{
-	     	  	 			if(!(validateStringField(form.getPhoneNumber(), context)))
+	     	  	 			if(validateStringField(form.getPhoneNumber(), context))
 	     	  	 			{return false;}
 	     	  	 		}
 	     	  	  //管理者名
 	     	  	 		if (form.getManagerName()!= null) 
 	     	  	 		{
-	     	  	 			if(!(validateStringField(form.getManagerName(), context)))
+	     	  	 			if(validateStringField(form.getManagerName(), context))
 	     	  	 			{return false;}
 	     	  	 		}
 	     	  	 		
@@ -247,8 +255,9 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
 	     	  		            return false;
 	     	  			    }
 	     	  		    }
-		 
+	     	  	 	System.out.println("登録バリデーション終了");
 		 return true;
+		 
 	}
 	
 }

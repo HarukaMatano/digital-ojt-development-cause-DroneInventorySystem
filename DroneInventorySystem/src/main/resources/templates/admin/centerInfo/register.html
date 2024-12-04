@@ -23,7 +23,9 @@
 					 <p th:text="${errorMsg}"></p>
 				</div>
 			
-				<form class="form-inline" method="post" th:action="@{'/admin/centerInfo/register/after'}" th:object="${CenterInfoForm}">
+				<form class="form-inline" method="post"
+          			th:action="${CenterInfoForm.centerId == null ? '/admin/centerInfo/register/after' : '/admin/centerInfo/update/after'}"
+          			th:object="${CenterInfoForm}">
 					
 					<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 					
@@ -33,7 +35,15 @@
 						</td>
 						
 						<td>
- 							自動連番
+ 							<!-- 新規登録時は表示せず、更新時のみ表示 -->
+                			<div th:if="${CenterInfoForm.centerId != null}">
+                  				<span th:text="${CenterInfoForm.centerId}" id="centerId"></span>
+                			</div>
+                			
+                			<!-- 新規登録時は自動連番表示 -->
+                			<div th:if="${CenterInfoForm.centerId == null}">
+                  				自動連番
+                			</div>	 
  						</td>
  					</tr>
  					
@@ -97,10 +107,12 @@
 						</td>
  						
  						<td>					
- 							<input type="radio" name="operationalStatus" value="0">
-		            		稼働中
-		            		<input type="radio" name="operationalStatus" value="1">
-		            		休止中
+ 							<!-- 稼働中ラジオボタン -->
+        					<input type="radio" name="operationalStatus" value="0" 
+				            th:checked="${CenterInfoForm.operationalStatus == 0}" /> 稼働中
+				        	<!-- 休止中ラジオボタン -->
+				        	<input type="radio" name="operationalStatus" value="1" 
+				            th:checked="${CenterInfoForm.operationalStatus == 1}" /> 休止中
 						</td>
 					</tr>
  					
@@ -138,9 +150,13 @@
 					</table>
 					
 					<button type="submit" class="btn btn-primary">登録</button>
+					
+					&ensp;&ensp;
+					
  				</form>
 			<br>
-				<a href="/admin/centerInfo" class="btn btn-secondary">キャンセル</a>		
+				<a href="/admin/centerInfo/update/delete" class="btn btn-secondary">削除</a>	
+				<a href="/admin/centerInfo" class="btn">キャンセル</a>		
 
 	</div>
   </body>

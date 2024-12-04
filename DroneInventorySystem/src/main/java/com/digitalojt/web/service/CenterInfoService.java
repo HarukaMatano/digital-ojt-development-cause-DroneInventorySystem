@@ -35,7 +35,10 @@ public class CenterInfoService
 	{
 
 		// 在庫センター情報作成
-		List<CenterInfo> centerInfoList = repository.findAll();
+//		List<CenterInfo> centerInfoList = repository.findAll();
+		
+		//削除フラグと稼働フラグのフィルター
+		List<CenterInfo> centerInfoList = repository.findByOperrationalStatusAndDeleteFlag();
 
 		return centerInfoList;
 	}
@@ -72,10 +75,43 @@ public class CenterInfoService
         centerInfo.setNotes(form.getNotes());
         centerInfo.setCreateDate(Timestamp.valueOf(LocalDateTime.now()));
         centerInfo.setUpdateDate(Timestamp.valueOf(LocalDateTime.now()));
-        centerInfo.setDeleteFlag("0");
-        
+        centerInfo.setDeleteFlag("0");      
         repository.save(centerInfo); // データベースに保存
     }
+	
+	//更新
+		public void update(CenterInfoForm form) 
+	    {
+	        CenterInfo centerInfo = repository.findByCenterId(form.getCenterId());
+	        centerInfo.setCenterName(form.getCenterName());
+	        centerInfo.setPostCode(form.getPostCode());
+	        centerInfo.setAddress(form.getAddress());
+	        centerInfo.setPhoneNumber(form.getPhoneNumber());
+	        centerInfo.setManagerName(form.getManagerName());
+	        centerInfo.setOperationalStatus(form.getOperationalStatus());
+	        centerInfo.setMaxStorageCapacity(String.valueOf(form.getMaxStorageCapacity()));
+	        centerInfo.setCurrentStorageCapacity(String.valueOf(form.getCurrentStorageCapacity()));
+	        centerInfo.setNotes(form.getNotes());
+	        centerInfo.setUpdateDate(Timestamp.valueOf(LocalDateTime.now()));
+	        centerInfo.setDeleteFlag("0");        
+	        repository.save(centerInfo); // データベースに保存
+	    }
+		
+		//削除
+		public void delete(CenterInfoForm form) 
+	    {
+			CenterInfo centerInfo = repository.findByCenterId(form.getCenterId());
+	        centerInfo.setUpdateDate(Timestamp.valueOf(LocalDateTime.now()));
+	        centerInfo.setDeleteFlag("1");
+	        repository.save(centerInfo); // データベースに保存
+	    }
+	
+	//ID検索
+	public CenterInfo getCenterInfoDataById(Long id)
+	{
+		CenterInfo centerInfoList =repository.findByCenterId(id);
+		return centerInfoList;
+	}
 
 }
 
