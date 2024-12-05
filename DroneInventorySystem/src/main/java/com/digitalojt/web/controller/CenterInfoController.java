@@ -24,6 +24,8 @@ import com.digitalojt.web.entity.CenterInfo;
 import com.digitalojt.web.form.CenterInfoForm;
 import com.digitalojt.web.service.CenterInfoService;
 import com.digitalojt.web.util.MessageManager;
+import com.digitalojt.web.validation.CenterInfoFormValidatorImpl.RegisterValidatorImpl;
+import com.digitalojt.web.validation.CenterInfoFormValidatorImpl.SearchValidatorImpl;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -96,9 +98,10 @@ public class CenterInfoController extends AbstractController
 		// ログの追加
         logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.SEARCH+"を開始します。");
         		
+        SearchValidatorImpl searchValidator = new SearchValidatorImpl();
         
 		// Valid項目チェック
-		if (bindingResult.hasErrors()) 
+        if (!searchValidator.isValid(form, bindingResult)) 
 		{
 			// エラーメッセージをプロパティファイルから取得
 			String errorMsg = MessageManager.getMessage(messageSource, bindingResult.getGlobalError().getDefaultMessage());
@@ -160,7 +163,9 @@ public class CenterInfoController extends AbstractController
 	@PostMapping(UrlConsts.CENTER_REGISTERED)
     public String register(@ModelAttribute @Valid CenterInfoForm form,BindingResult bindingResult,Model model) 
     {	
-		if (bindingResult.hasErrors()) 
+		RegisterValidatorImpl registerValidator = new RegisterValidatorImpl();
+		
+		 if (!registerValidator.isValid(form, bindingResult)) 
 		{
 			String errorMsg = MessageManager.getMessage(messageSource, bindingResult.getGlobalError().getDefaultMessage());
 			model.addAttribute("errorMsg", errorMsg);
@@ -197,7 +202,7 @@ public class CenterInfoController extends AbstractController
         return "admin/centerInfo/register"; 
     }
 	
-	//更新処理
+	//更新処理(上手くいっていない。)
 	@PostMapping(UrlConsts.CENTER_UPDATED)
     public String update(@ModelAttribute CenterInfoForm form) 
     {
@@ -212,7 +217,7 @@ public class CenterInfoController extends AbstractController
         return "redirect:/admin/centerInfo";  // 更新後に一覧画面にリダイレクト
     }
 	
-	//削除確認画面移動
+	//削除確認画面移動(上手くいっていない。)
 	@GetMapping(UrlConsts.CENTER_DELETE)
     public String deleteCheckForm(@ModelAttribute CenterInfoForm form) 
     {
