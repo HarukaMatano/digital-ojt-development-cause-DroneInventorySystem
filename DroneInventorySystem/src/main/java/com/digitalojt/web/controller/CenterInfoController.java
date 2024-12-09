@@ -125,6 +125,7 @@ public class CenterInfoController extends AbstractController
 	    List<CenterInfo> centerInfoList = centerInfoService.getCenterInfoData(form.getCenterName(), form.getRegion(), form.getStorageCapacityFrom(), form.getStorageCapacityTo());
 	    model.addAttribute("centerInfoList", centerInfoList);
 
+	    //検索したけどリストが空の時
 	    if (centerInfoList.isEmpty()) {
 	        String errorMsg = messageSource.getMessage(ErrorMessage.CENTER_SEARCH_NOT_RESULT_MESSAGE, null, Locale.getDefault());
 	        model.addAttribute("errorMsg", errorMsg);
