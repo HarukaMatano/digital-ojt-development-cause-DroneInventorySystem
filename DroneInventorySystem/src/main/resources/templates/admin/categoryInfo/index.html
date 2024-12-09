@@ -12,35 +12,42 @@
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">分類情報管理</h6>
          </div>
+    
+    
+	    <div class="card-body">
+		<center>
+			
+				<form class="form-inline" method="post" th:action="@{'/admin/categoryInfo/search'}" th:object="${CenterInfoForm}" >
+		        
+		        <!-- 検索条件に下線 -->
+		        <label for="searchTerm" class="mr-2"><u>検索条件</u></label>
+		        <!-- 分類名-->
+		        <label for="searchTerm" class="mr-2">分類名</label> 
+		        <input type="text" name="categoryName" th:value="${categoryName}" class="form-control mr-2">
+		        <!-- 検索ボタン-->
+		        <button type="submit" class="btn btn-primary">検索</button>
+		    	
+		    	</form>
+			
+	    </center>
+	    
+	    &nbsp;&nbsp;
+	     <!-- エラーメッセージの表示 -->
+	     <center>
+	 	<div th:if="${errorMsg != null}" class="text-danger">
+			<p th:text="${errorMsg}"></p>
+		</div>
+		</center>
+		
+	    <div class="table-responsive">
+	     	<table border="1" class="table table-bordered" width="50%" style="margin: 0 auto; text-align: center;">
+		    	<tr th:each="item : ${categoryInfoList}">
+		        <td th:text="${item.categoryName}"></td>
+		     	</tr>
+		 	</table>
+	    </div>
+		</div>
     </div>
-    
-	<center>
-		<form method="post" th:action="@{'/admin/categoryInfo/search'}" th:object="${CenterInfoForm}" >
-        
-        <!-- 検索条件に下線 -->
-        <u>検索条件</u>&nbsp;&nbsp;&nbsp;&nbsp;
-        <!-- 分類名-->
-        分類名 &nbsp;&nbsp;&nbsp;&nbsp;
-        <input type="text" name="categoryName" th:value="${categoryName}">&nbsp;&nbsp;&nbsp;&nbsp;
-        <!-- 検索ボタン-->
-        <button type="submit" class="btn btn-primary">検索</button>
-    	
-    	</form>
-    </center>
-    
-     <!-- エラーメッセージの表示 -->
-     <center>
- 	<div th:if="${errorMsg != null}" class="text-danger">
-		<p th:text="${errorMsg}"></p>
-	</div>
-	</center>
-	
-    
-     <table border="1"  width="50%" style="margin: 0 auto; text-align: center;">
-    	<tr th:each="item : ${categoryInfoList}">
-        <td th:text="${item.categoryName}"></td>
-     	</tr>
-	 </table>
     
   </body>
 </html>
