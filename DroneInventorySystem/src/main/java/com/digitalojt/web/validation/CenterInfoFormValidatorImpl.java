@@ -37,6 +37,7 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
 
 	    System.out.println("allFieldsEmpty:" + allFieldsEmpty);
 
+	    //空検索
 	    if (allFieldsEmpty) 
 	    {
 	        bindingResult.rejectValue("centerName", "ALL_FIELDS_EMPTY_ERROR_MESSAGE", MessageUtil.getMessage(ErrorMessage.ALL_FIELDS_EMPTY_ERROR_MESSAGE));
@@ -44,6 +45,7 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
 	        return;
 	    }
 
+	    //不正文字列
 	    if (form.getCenterName() != null && validateStringField(form.getCenterName(), bindingResult, "centerName")) return;
 	    if (form.getRegion() != null && ParmCheckUtil.isParameterInvalid(form.getRegion())) 
 	    {
@@ -83,6 +85,7 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
 	public void validateRegister(CenterInfoForm form, BindingResult bindingResult) {
 	    System.out.println("登録バリデーション開始");
 
+	    //必須項目
 	    if (StringUtils.isEmpty(form.getCenterName())) {
 	        bindingResult.rejectValue("centerName", "CENTER_NAME_EMPTY_ERROR_MESSAGE", MessageUtil.getMessage(ErrorMessage.CENTER_REGISTER_MAST));
 	        System.out.println("Error set for centerName: " + ErrorMessage.CENTER_SEARCH_NOT_RESULT_MESSAGE);
@@ -91,7 +94,8 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
 	    
 	    //追記
 	    if (form.getCenterName() != null && validateStringField(form.getCenterName(), bindingResult, "centerName")) return;
-
+	    
+	    //必須項目
 	    if (StringUtils.isEmpty(form.getPostCode())) {
 	        bindingResult.rejectValue("postCode", "POST_CODE_EMPTY_ERROR_MESSAGE", MessageUtil.getMessage(ErrorMessage.CENTER_REGISTER_MAST));
 	        return;
@@ -100,6 +104,7 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
 	    //追記
 	    if (form.getPostCode() != null && validateStringField(form.getPostCode(), bindingResult, "postCode")) return;
 
+	    //必須項目
 	    if (StringUtils.isEmpty(form.getAddress())) {
 	        bindingResult.rejectValue("address", "ADDRESS_EMPTY_ERROR_MESSAGE", MessageUtil.getMessage(ErrorMessage.CENTER_REGISTER_MAST));
 	        return;
@@ -108,6 +113,7 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
 	    //追記
 	    if (form.getAddress() != null && validateStringField(form.getAddress(), bindingResult, "Address")) return;
 	    
+	    //必須項目
 	    if (StringUtils.isEmpty(form.getPhoneNumber())) {
 	        bindingResult.rejectValue("phoneNumber", "PHONE_NUMBER_EMPTY_ERROR_MESSAGE", MessageUtil.getMessage(ErrorMessage.CENTER_REGISTER_MAST));
 	        return;
@@ -116,6 +122,7 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
 	    //追記
 	    if (form.getPhoneNumber() != null && validateStringField(form.getPhoneNumber(), bindingResult, "phoneNumber")) return;
 	    
+	    //必須項目
 	    if (StringUtils.isEmpty(form.getManagerName())) {
 	        bindingResult.rejectValue("managerName", "MANAGER_NAME_EMPTY_ERROR_MESSAGE", MessageUtil.getMessage(ErrorMessage.CENTER_REGISTER_MAST));
 	        return;
@@ -124,16 +131,19 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
 	    //追記
 	    if (form.getManagerName() != null && validateStringField(form.getManagerName(), bindingResult, "managerName")) return;
 	    
+	    //必須項目
 	    if (form.getMaxStorageCapacity() == null) {
 	        bindingResult.rejectValue("maxStorageCapacity", "MAX_STORAGE_CAPACITY_EMPTY_ERROR_MESSAGE", MessageUtil.getMessage(ErrorMessage.CENTER_REGISTER_MAST));
 	        return;
 	    }
 	    
+	    //必須項目
 	    if (form.getCurrentStorageCapacity() == null) {
 	        bindingResult.rejectValue("currentStorageCapacity", "CURRENT_STORAGE_CAPACITY_EMPTY_ERROR_MESSAGE", MessageUtil.getMessage(ErrorMessage.CENTER_REGISTER_MAST));
 	        return;
 	    }
 	    
+	    //大小関係
 	    if (form.getMaxStorageCapacity() != null && form.getCurrentStorageCapacity() != null) 
 	    {
 	    	if(form.getCurrentStorageCapacity() > form.getMaxStorageCapacity() )
@@ -142,6 +152,9 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
 		        return;
 	    	}
 	    }
+	    
+	    //備考の不正文字列バリデーション
+	    if (form.getNotes() != null && validateStringField(form.getNotes(), bindingResult, "Notes")) return;
 
 	    System.out.println("登録バリデーション終了");
 	}

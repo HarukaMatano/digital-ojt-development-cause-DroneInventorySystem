@@ -97,6 +97,7 @@ public class CenterInfoController extends AbstractController
 	public String search(Model model, @Valid CenterInfoForm form, BindingResult bindingResult) {
 	    logger.info(ScreenName.STOCK_CENETR + "の" + FeatureName.SEARCH + "を開始します。");
 
+	    //バリデーション
 	    validator.validateSearch(form, bindingResult);
 	    if (bindingResult.hasErrors()) {
 	        if (bindingResult.getGlobalError() != null) 
@@ -112,8 +113,10 @@ public class CenterInfoController extends AbstractController
 	            model.addAttribute("errorMsg", errorMsg);
 	        }
 
+	        //プルダウン選択
 	        List<Region> regions = Arrays.asList(Region.values());
 	        model.addAttribute("regions", regions);
+	        
 	        model.addAttribute("CenterInfoForm", form);
 
 	        return "admin/centerInfo/index";
@@ -157,8 +160,8 @@ public class CenterInfoController extends AbstractController
 	//新規登録処理
 	@PostMapping(UrlConsts.CENTER_REGISTERED)
 	public String register(@ModelAttribute @Valid CenterInfoForm form, BindingResult bindingResult, Model model) {
-	    logger.info(ScreenName.STOCK_CENETR + "の" + FeatureName.REGISTER + "を開始します。");
 
+		//バリデーション
 	    validator.validateRegister(form, bindingResult);
 	    if (bindingResult.hasErrors()) {
 	        if (bindingResult.getGlobalError() != null) {
@@ -176,6 +179,7 @@ public class CenterInfoController extends AbstractController
 	        return "admin/centerInfo/register";
 	    }
 
+	    //登録処理
 	    centerInfoService.register(form);
 	    logger.info(ScreenName.STOCK_CENETR + "の" + FeatureName.REGISTER + "を終了します。");
 	    return "redirect:/admin/centerInfo";
@@ -204,36 +208,71 @@ public class CenterInfoController extends AbstractController
         return "admin/centerInfo/register"; 
     }
 	
-	//更新処理(上手くいっていない。)
+	//更新処理
 	@PostMapping(UrlConsts.CENTER_UPDATED)
-    public String update(@ModelAttribute CenterInfoForm form) 
+    public String update(@ModelAttribute @Valid CenterInfoForm form, BindingResult bindingResult, Model model) 
     {
-		System.out.println("ID:"+form.getCenterId());
-		System.out.println("NAME:"+form.getCenterName());
-		System.out.println("POST:"+form.getPostCode());
-		
-        centerInfoService.update(form);
-        
+		//バリデーション
+		validator.validateRegister(form, bindingResult);
+	    if (bindingResult.hasErrors()) {
+	        if (bindingResult.getGlobalError() != null) 
+	        {
+	            String errorMsg = MessageManager.getMessage(messageSource, bindingResult.getGlobalError().getDefaultMessage());
+	            model.addAttribute("errorMsg", errorMsg);
+	        } 
+	        else if (bindingResult.hasFieldErrors()) 
+	        {
+	            bindingResult.getFieldErrors().forEach(error -> {
+	                System.out.println("Field Error: " + error.getField() + " - " + error.getDefaultMessage());
+	            });
+	            String errorMsg = bindingResult.getFieldError().getDefaultMessage();
+	            System.out.println("Retrieved Field Error Message: " + errorMsg);
+	            model.addAttribute("errorMsg", errorMsg);
+	        }
+	        model.addAttribute("CenterInfoForm", form);
+	        return "admin/centerInfo/register";
+	    }
+	    
+	    //更新処理
+        centerInfoService.update(form);        
      // ログの追加
         logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.UPDATE+"を終了します。");
+        
         return "redirect:/admin/centerInfo";  // 更新後に一覧画面にリダイレクト
     }
 	
-	//削除確認画面移動(上手くいっていない。)
+	//削除確認画面移動
 	@GetMapping(UrlConsts.CENTER_DELETE)
-    public String deleteCheckForm(@ModelAttribute CenterInfoForm form) 
+    public String deleteCheckForm(@PathVariable("id") Long id,Model model) 
     {
-		System.out.println(form.getCenterName());
+		logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.DELETE+"を開始します。");
+		
+		CenterInfo centerInfo = centerInfoService.getCenterInfoDataById(id);
+		CenterInfoForm form = new CenterInfoForm();
+        form.setCenterId(centerInfo.getCenterId());
+        form.setCenterName(centerInfo.getCenterName());
+        form.setPostCode(centerInfo.getPostCode());
+        form.setAddress(centerInfo.getAddress());
+        form.setPhoneNumber(centerInfo.getPhoneNumber());
+        form.setManagerName(centerInfo.getManagerName());
+        form.setOperationalStatus(centerInfo.getOperationalStatus());
+        form.setMaxStorageCapacity(Integer.parseInt(centerInfo.getMaxStorageCapacity()));
+        form.setCurrentStorageCapacity(Integer.parseInt(centerInfo.getCurrentStorageCapacity()));
+        form.setNotes(centerInfo.getNotes());
+        model.addAttribute("CenterInfoForm", form);
+		
 		return "admin/centerInfo/delete"; 
     }
 	
 	//削除処理
-//	@GetMapping(UrlConsts.CENTER_DELETE)
-//	public String deletedForm(@PathVariable("id") Long id, Model model,CenterInfoForm form) 
-//	{
-//	     centerInfoService.delete(form);
-//	     return "redirect:/admin/centerInfo"; 
-//	}
+	@PostMapping(UrlConsts.CENTER_DELETED)
+	public String deletedForm(@ModelAttribute CenterInfoForm form,Model model) 
+	{
+		//削除処理
+	        centerInfoService.delete(form);
+	        logger.info(ScreenName.STOCK_CENETR + "の" + FeatureName.DELETE + "を終了します。");
+	        return "redirect:/admin/centerInfo"; // 削除後に一覧画面にリダイレクト
+	}
 	
 	
 	

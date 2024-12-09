@@ -83,6 +83,7 @@ public class CenterInfoService
 		public void update(CenterInfoForm form) 
 	    {
 	        CenterInfo centerInfo = repository.findByCenterId(form.getCenterId());
+	        
 	        centerInfo.setCenterName(form.getCenterName());
 	        centerInfo.setPostCode(form.getPostCode());
 	        centerInfo.setAddress(form.getAddress());
@@ -101,8 +102,18 @@ public class CenterInfoService
 		public void delete(CenterInfoForm form) 
 	    {
 			CenterInfo centerInfo = repository.findByCenterId(form.getCenterId());
+			
+			centerInfo.setCenterName(form.getCenterName());
+	        centerInfo.setPostCode(form.getPostCode());
+	        centerInfo.setAddress(form.getAddress());
+	        centerInfo.setPhoneNumber(form.getPhoneNumber());
+	        centerInfo.setManagerName(form.getManagerName());
+	        centerInfo.setOperationalStatus(0);
+	        centerInfo.setMaxStorageCapacity(String.valueOf(form.getMaxStorageCapacity()));
+	        centerInfo.setCurrentStorageCapacity(String.valueOf(form.getCurrentStorageCapacity()));
+	        centerInfo.setNotes(form.getNotes());
 	        centerInfo.setUpdateDate(Timestamp.valueOf(LocalDateTime.now()));
-	        centerInfo.setDeleteFlag("1");
+	        centerInfo.setDeleteFlag("1");        
 	        repository.save(centerInfo); // データベースに保存
 	    }
 	

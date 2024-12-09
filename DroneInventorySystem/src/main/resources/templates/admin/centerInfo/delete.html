@@ -25,95 +25,99 @@
 					
 					<tr>
 						<td>
-							<label for="searchTerm" class="mr-2">在庫センターID *(必須)</label>
+							<label for="searchTerm" class="mr-2">在庫センターID</label>
 						</td>
-							<td> [[${CenterInfo.centerId}]] </td>
 						<td>
- 							
+ 							 <input type="text" id="centerId" th:field="*{centerId}" class="form-control mr-2" readonly />
  						</td>
  					</tr>
  					
  					<tr>
 						 <td>
- 							<label for="searchTerm" class="mr-2">在庫センター名 *</label>
+ 							<label for="searchTerm" class="mr-2">在庫センター名</label>
  						</td>
  						
  						<td>
-							 <td> [[${CenterInfo.centerName}]] </td>
+							 <input type="text" id="centerId" th:field="*{centerName}" class="form-control mr-2" readonly />
 						</td>
 					</tr>	
 						 
 						 
 					<tr>
 						 <td>	 
-							<label for="searchTerm" class="mr-2">郵便番号 *</label>
+							<label for="searchTerm" class="mr-2">郵便番号</label>
  						</td>
  						
  						<td>
-							 <td> [[${CenterInfo.postCode}]] </td>
+							<input type="text" id="centerId" th:field="*{postCode}" class="form-control mr-2" readonly />
  						</td>
 					</tr>
  					
  					
  					<tr>
 						<td>
-							<label for="searchTerm" class="mr-2">住所 *</label>
+							<label for="searchTerm" class="mr-2">住所</label>
  						</td>
  						
  						<td>
-							 <td> [[${CenterInfo.address}]] </td>
+							<input type="text" id="centerId" th:field="*{address}" class="form-control mr-2" readonly />
 						</td>
 					</tr>
  										
  					<tr>
 						<td>
-							<label for="searchTerm" class="mr-2">電話番号 *</label>
+							<label for="searchTerm" class="mr-2">電話番号</label>
 						</td>
  						
  						<td>
-							 <td> [[${CenterInfo.phoneNumber}]] </td>
+							<input type="text" id="centerId" th:field="*{phoneNumber}" class="form-control mr-2" readonly />
 						</td>
 					</tr>
  					
  					
  					<tr>
 						 <td>
-							<label for="searchTerm" class="mr-2">管理者名 *</label>
+							<label for="searchTerm" class="mr-2">管理者名</label>
 						</td>
  						
  						<td>
-							 <td> [[${CenterInfo.manageName}]] </td>
+							<input type="text" id="centerId" th:field="*{managerName}" class="form-control mr-2" readonly />
 						</td>
 					</tr>
  					
  					
  					<tr>
 						 <td>
-							<label for="searchTerm" class="mr-2">稼働ステータス *</label>
+							<label for="searchTerm" class="mr-2">稼働ステータス</label>
 						</td>
  						
  						<td>
-							<td> [[${CenterInfo.operationalStatus}]] </td>					
+							<!-- 稼働中ラジオボタン -->
+        					<input type="radio" name="operationalStatus" value="0" 
+				            th:checked="${CenterInfoForm.operationalStatus == 0}" disabled  /> 稼働中
+				        	<!-- 休止中ラジオボタン -->
+				        	<input type="radio" name="operationalStatus" value="1" 
+				            th:checked="${CenterInfoForm.operationalStatus == 1}" disabled  /> 休止中
 						</td>
 					</tr>
  					
  					<tr>
 						 <td> 	
-							<label for="searchTerm" class="mr-2">最大容量(m<sup>3</sup>) *</label>
+							<label for="searchTerm" class="mr-2">最大容量(m<sup>3</sup>)</label>
  						</td>
  						
  						<td> 					
-							 <td> [[${CenterInfo.maxStorageCapacity}]] </td>
+							<input type="text" id="centerId" th:field="*{maxStorageCapacity}" class="form-control mr-2" readonly />
 		            	</td>
 					</tr>
  										
  					<tr>
 						 <td> 						
-							<label for="searchTerm" class="mr-2">現在容量(m<sup>3</sup>) *</label>
+							<label for="searchTerm" class="mr-2">現在容量(m<sup>3</sup>)</label>
  					 	 </td>
- 						
+ 							
  						 <td> 
-							<td> [[${CenterInfo.currentStorageCapacity}]] </td>
+							<input type="text" id="centerId" th:field="*{currentStorageCapacity}" class="form-control mr-2" readonly />
 						 </td>
 					</tr>
 					
@@ -124,7 +128,7 @@
 						 </td>
  						
  						 <td> 
-							<td> [[${CenterInfo.notes}]] </td>
+							<input type="text" id="centerId" th:field="*{notes}" class="form-control mr-2" readonly />
 						 </td>
 					</tr>
 

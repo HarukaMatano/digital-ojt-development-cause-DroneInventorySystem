@@ -39,7 +39,7 @@ public class UrlConsts {
 		public static final String CENTER_UPDATED = "/admin/centerInfo/update/after";
 		
 	// 在庫センター情報画面 削除
-	public static final String CENTER_DELETE = "/admin/centerInfo/update/delete";
+	public static final String CENTER_DELETE = "/admin/centerInfo/update/delete/{id}";
 	
 	// 在庫センター情報画面 削除
 	public static final String CENTER_DELETED = "/admin/centerInfo/update/deleted";

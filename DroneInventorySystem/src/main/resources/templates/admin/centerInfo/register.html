@@ -38,6 +38,7 @@
  							<!-- 新規登録時は表示せず、更新時のみ表示 -->
                 			<div th:if="${CenterInfoForm.centerId != null}">
                   				<span th:text="${CenterInfoForm.centerId}" id="centerId"></span>
+                  				<input type="hidden" name="centerId" th:value="${CenterInfoForm.centerId}">
                 			</div>
                 			
                 			<!-- 新規登録時は自動連番表示 -->
@@ -153,9 +154,13 @@
 					
 					&ensp;&ensp;
 					
+					<div th:if="${CenterInfoForm.centerId != null}">                 	
+					 	<a th:href="@{'/admin/centerInfo/update/delete/' + ${CenterInfoForm.centerId}}" class="btn btn-danger">削除</a>
+					</div>
+					
  				</form>
 			<br>
-				<a href="/admin/centerInfo/update/delete" class="btn btn-secondary">削除</a>	
+				
 				<a href="/admin/centerInfo" class="btn">キャンセル</a>		
 
 	</div>
