@@ -6,7 +6,8 @@ package com.digitalojt.web.consts;
  * @author haruka matano
  *
  */
-public class ErrorMessage {
+public class ErrorMessage 
+{
 	
 	// ログイン情報の入力に誤りがあった場合に、出力するエラーメッセージのID
 	public static final String  LOGIN_WRONG_INPUT = "login.wrongInput";

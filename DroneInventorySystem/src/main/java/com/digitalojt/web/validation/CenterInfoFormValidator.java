@@ -18,9 +18,8 @@ import jakarta.validation.Payload;
 @Constraint(validatedBy = CenterInfoFormValidatorImpl.class)
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface CenterInfoFormValidator 
-{
-	String message() default ErrorMessage.ALL_FIELDS_EMPTY_ERROR_MESSAGE;
+public @interface CenterInfoFormValidator {
+    String message() default ErrorMessage.ALL_FIELDS_EMPTY_ERROR_MESSAGE;
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

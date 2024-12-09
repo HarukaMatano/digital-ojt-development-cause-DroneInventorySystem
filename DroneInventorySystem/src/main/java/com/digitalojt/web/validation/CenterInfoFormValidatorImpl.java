@@ -1,253 +1,164 @@
 package com.digitalojt.web.validation;
 
+import org.springframework.stereotype.Component;
+import org.springframework.validation.BindingResult;
 import org.thymeleaf.util.StringUtils;
 
 import com.digitalojt.web.consts.ErrorMessage;
 import com.digitalojt.web.consts.RegisterParams;
 import com.digitalojt.web.form.CenterInfoForm;
+import com.digitalojt.web.util.MessageUtil;
 import com.digitalojt.web.util.ParmCheckUtil;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-/**
- * 在庫センター情報画面のバリデーションチェック 実装クラス
- * 
- * @author haruka matano
- */
-public class CenterInfoFormValidatorImpl 
-{
-	// 登録バリデーション
-    public static class RegisterValidatorImpl implements ConstraintValidator<RegisterValidation, CenterInfoForm> 
-    {
-        @Override
-        public boolean isValid(CenterInfoForm form, ConstraintValidatorContext context) 
-        {
-        	System.out.println("登録バリデーション開始");
-    		
-    		boolean allFieldsEmptyRegister = 
-    	            StringUtils.isEmpty(form.getCenterName()) ||
-    	            StringUtils.isEmpty(form.getPostCode()) ||
-    	            StringUtils.isEmpty(form.getAddress()) ||
-    	            StringUtils.isEmpty(form.getPhoneNumber()) ||
-    	            StringUtils.isEmpty(form.getManagerName()) ||
-    	            form.getOperationalStatus() == null ||
-    	            form.getMaxStorageCapacity() == null ||
-    	            form.getCurrentStorageCapacity() == null;
+@Component
+public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterInfoFormValidator, CenterInfoForm> {
 
-    		System.out.println("allFieldsEmptyRegister:"+allFieldsEmptyRegister);
-    		
-    		 if (allFieldsEmptyRegister) 
-    		 {
-    		      context.disableDefaultConstraintViolation();
-    		      context.buildConstraintViolationWithTemplate(ErrorMessage.CENTER_REGISTER_MAST)
-    		      .addConstraintViolation();
-    		       return false;
-    		 }
-
-    			//センター名のチェック
-    		 		if (form.getCenterName()!= null) 
-    		 		{
-    		 			if(validateStringField(form.getCenterName(), context))
-    		 			{return false;}
-    		 		}
-    	     	//郵便番号のチェック
-    	     	  	 		if (form.getPostCode()!= null) 
-    	     	  	 		{
-    	     	  	 			if(validateStringField(form.getPostCode(), context))
-    	     	  	 			{return false;}
-    	     	  	 		}
-    	     	  	    
-    	     	  	  //住所のチェック
-    	     	  	 		if (form.getAddress()!= null) 
-    	     	  	 		{
-    	     	  	 			if(validateStringField(form.getAddress(), context))
-    	     	  	 			{return false;}
-    	     	  	 		}
-    	     	  	 		
-    	     	  	  //電話番号
-    	     	  	 		if (form.getPhoneNumber()!= null) 
-    	     	  	 		{
-    	     	  	 			if(validateStringField(form.getPhoneNumber(), context))
-    	     	  	 			{return false;}
-    	     	  	 		}
-    	     	  	  //管理者名
-    	     	  	 		if (form.getManagerName()!= null) 
-    	     	  	 		{
-    	     	  	 			if(validateStringField(form.getManagerName(), context))
-    	     	  	 			{return false;}
-    	     	  	 		}
-    	     	  	 		
-    	     	  	  //備考
-    	     	  	 		if (form.getNotes()!= null) 
-    	     	  	 		{
-    	     	  	 			if (ParmCheckUtil.isParameterInvalid(form.getNotes())) 
-    	     	  	 		    {
-    	     	  	 		        context.disableDefaultConstraintViolation();
-    	     	  	 		        context.buildConstraintViolationWithTemplate(ErrorMessage.INVALID_INPUT_ERROR_MESSAGE)
-    	     	  	 		                .addConstraintViolation();
-    	     	  	 		        return false;
-    	     	  	 		    }
-    	     	  	 		}
-
-    	     	  	  //最大容量
-    	     	  	 		if (form.getMaxStorageCapacity() != null) 
-    	     	  		    {
-    	     	  		        try 
-    	     	  		        {
-    	     	  		            Integer.parseInt(form.getMaxStorageCapacity().toString());
-    	     	  		        } 
-    	     	  		        catch (NumberFormatException e) 
-    	     	  		        {
-    	     	  		            context.disableDefaultConstraintViolation();
-    	     	  		            context.buildConstraintViolationWithTemplate(ErrorMessage.INVALID_INPUT_ERROR_MESSAGE)
-    	     	  		                    .addConstraintViolation();
-    	     	  		            return false;
-    	     	  		        }
-    	     	  		    }
-    	     	  	  //現在容量
-    	     	  	 		if (form.getCurrentStorageCapacity()!= null) 
-    	     	  		    {
-    	     	  		        try 
-    	     	  		        {
-    	     	  		            Integer.parseInt(form.getCurrentStorageCapacity().toString());
-    	     	  		        } 
-    	     	  		        catch (NumberFormatException e) 
-    	     	  		        {
-    	     	  		            context.disableDefaultConstraintViolation();
-    	     	  		            context.buildConstraintViolationWithTemplate(ErrorMessage.INVALID_INPUT_ERROR_MESSAGE)
-    	     	  		                    .addConstraintViolation();
-    	     	  		            return false;
-    	     	  		        }
-    	     	  		    }
-    	     	  	 //最大容量と現在容量
-    	     	  	 		if(form.getMaxStorageCapacity() != null &&form.getCurrentStorageCapacity() != null)
-    	     	  		    {
-    	     	  			    if(form.getMaxStorageCapacity()<form.getCurrentStorageCapacity())
-    	     	  			    {
-    	     	  			    	context.disableDefaultConstraintViolation();
-    	     	  		            context.buildConstraintViolationWithTemplate(ErrorMessage.CENTER_REGISTER_UPDOWN_INVALID_MESSAGE)
-    	     	  		                    .addConstraintViolation();
-    	     	  		            return false;
-    	     	  			    }
-    	     	  		    }
-    	     	  	 	System.out.println("登録バリデーション終了");
-        	
-            return true;
-        }
-    }
-
-    // 検索バリデーション
-    public static class SearchValidatorImpl implements ConstraintValidator<SearchValidation, CenterInfoForm> 
-    {
-        @Override
-        public boolean isValid(CenterInfoForm form, ConstraintValidatorContext context) 
-        {
-        	System.out.println("検索バリデーション開始");
-        	boolean allFieldsEmpty = 
-    	            StringUtils.isEmpty(form.getCenterName()) &&
-    	            StringUtils.isEmpty(form.getRegion()) &&
-    	            form.getStorageCapacityFrom() == null &&
-    	            form.getStorageCapacityTo() == null;
-    		
-    		System.out.println("allFieldsEmpty:"+allFieldsEmpty);
-    		
-    		if (allFieldsEmpty) 
-    	    {
-    		     context.disableDefaultConstraintViolation();
-    		     context.buildConstraintViolationWithTemplate(ErrorMessage.ALL_FIELDS_EMPTY_ERROR_MESSAGE)
-    		     .addConstraintViolation();
-    		     return false;
-    	    }
-    		
-    		// センター名のチェック
-     		if (form.getCenterName() != null) 
-     		{
-     			if(validateStringField(form.getCenterName(), context)){return false;}
-     		}
-
-     		// 都道府県のチェック
-     		if (form.getRegion() != null) 
-     		{
-     			// 不正文字列チェック
-     			if (ParmCheckUtil.isParameterInvalid(form.getRegion())) 
-     			{
-     				context.disableDefaultConstraintViolation();
-     				context.buildConstraintViolationWithTemplate(ErrorMessage.INVALID_INPUT_ERROR_MESSAGE)
-     						.addConstraintViolation();
-     				return false;
-     			}
-     		}
-     		
-     		// 現在容量のチェック
-     	    if (form.getStorageCapacityFrom() != null) 
-     	    {
-     	        try 
-     	        {
-     	            Integer.parseInt(form.getStorageCapacityFrom().toString());
-     	        } 
-     	        catch (NumberFormatException e) 
-     	        {
-     	            context.disableDefaultConstraintViolation();
-     	            context.buildConstraintViolationWithTemplate(ErrorMessage.INVALID_INPUT_ERROR_MESSAGE)
-     	                    .addConstraintViolation();
-     	            return false;
-     	        }
-     	    }
-
-     	    if (form.getStorageCapacityTo() != null) 
-     	    {
-     	        try 
-     	        {
-     	            Integer.parseInt(form.getStorageCapacityTo().toString());
-     	        } 
-     	        catch (NumberFormatException e) 
-     	        {
-     	            context.disableDefaultConstraintViolation();
-     	            context.buildConstraintViolationWithTemplate(ErrorMessage.INVALID_INPUT_ERROR_MESSAGE)
-     	                    .addConstraintViolation();
-     	            return false;
-     	        }
-     	    }
-     	    
-     	    if(form.getStorageCapacityFrom() != null &&form.getStorageCapacityTo() != null)
-     	    {
-     		    if(form.getStorageCapacityFrom()>form.getStorageCapacityTo())
-     		    {
-     		    	context.disableDefaultConstraintViolation();
-     	            context.buildConstraintViolationWithTemplate(ErrorMessage.CENTER_SEARCH_UPDOWN_INVALID_MESSAGE)
-     	                    .addConstraintViolation();
-     	            return false;
-     		    }
-     	    }
-     	   System.out.println("検索バリデーション終了");
-            return true;
-        }
-    }
-
-	/**
-	 * バリデーションチェック
-	 */
-	
-	//不正文字列と文字数バリデーションメソッド
-	private static boolean validateStringField(String field, ConstraintValidatorContext context) 
+	@Override
+    public boolean isValid(CenterInfoForm form, ConstraintValidatorContext context) 
 	{
-	    if (ParmCheckUtil.isParameterInvalid(field)) 
+        // バリデーションロジックをここに記載
+        return true;
+    }
+	
+	
+	// 検索バリデーション
+	public void validateSearch(CenterInfoForm form, BindingResult bindingResult) 
+	{
+	    System.out.println("検索バリデーション開始");
+
+	    boolean allFieldsEmpty =
+	        StringUtils.isEmpty(form.getCenterName()) &&
+	        StringUtils.isEmpty(form.getRegion()) &&
+	        form.getStorageCapacityFrom() == null &&
+	        form.getStorageCapacityTo() == null;
+
+	    System.out.println("allFieldsEmpty:" + allFieldsEmpty);
+
+	    if (allFieldsEmpty) 
 	    {
-	        context.disableDefaultConstraintViolation();
-	        context.buildConstraintViolationWithTemplate(ErrorMessage.INVALID_INPUT_ERROR_MESSAGE)
-	                .addConstraintViolation();
-	        return false;
+	        bindingResult.rejectValue("centerName", "ALL_FIELDS_EMPTY_ERROR_MESSAGE", MessageUtil.getMessage(ErrorMessage.ALL_FIELDS_EMPTY_ERROR_MESSAGE));
+	        System.out.println("Error set for centerName: " + ErrorMessage.ALL_FIELDS_EMPTY_ERROR_MESSAGE);
+	        return;
 	    }
 
-	    if (field.length() > RegisterParams.REGISTER_MAX_LENGTH) 
+	    if (form.getCenterName() != null && validateStringField(form.getCenterName(), bindingResult, "centerName")) return;
+	    if (form.getRegion() != null && ParmCheckUtil.isParameterInvalid(form.getRegion())) 
 	    {
-	        context.disableDefaultConstraintViolation();
-	        context.buildConstraintViolationWithTemplate(ErrorMessage.CENTER_NAME_LENGTH_ERROR_MESSAGE)
-	                .addConstraintViolation();
-	        return false;
+	        bindingResult.rejectValue("region", "INVALID_INPUT_ERROR_MESSAGE",MessageUtil.getMessage(ErrorMessage.INVALID_INPUT_ERROR_MESSAGE));
+	        return;
 	    }
-	    return true;
+
+	    if (form.getStorageCapacityFrom() != null) 
+	    {
+	        try {
+	            Integer.parseInt(form.getStorageCapacityFrom().toString());
+	        } catch (NumberFormatException e) {
+	            bindingResult.rejectValue("storageCapacityFrom", "INVALID_INPUT_ERROR_MESSAGE", MessageUtil.getMessage(ErrorMessage.INVALID_INPUT_ERROR_MESSAGE));
+	            return;
+	        }
+	    }
+
+	    if (form.getStorageCapacityTo() != null) {
+	        try {
+	            Integer.parseInt(form.getStorageCapacityTo().toString());
+	        } catch (NumberFormatException e) {
+	            bindingResult.rejectValue("storageCapacityTo", "INVALID_INPUT_ERROR_MESSAGE", MessageUtil.getMessage(ErrorMessage.INVALID_INPUT_ERROR_MESSAGE));
+	            return;
+	        }
+	    }
+
+	    if (form.getStorageCapacityFrom() != null && form.getStorageCapacityTo() != null) {
+	        if (form.getStorageCapacityFrom() > form.getStorageCapacityTo()) {
+	            bindingResult.rejectValue("storageCapacityTo", "CENTER_SEARCH_UPDOWN_INVALID_MESSAGE", MessageUtil.getMessage(ErrorMessage.CENTER_SEARCH_UPDOWN_INVALID_MESSAGE));
+	            return;
+	        }
+	    }
+
+	    System.out.println("検索バリデーション終了");
+	}
+
+	public void validateRegister(CenterInfoForm form, BindingResult bindingResult) {
+	    System.out.println("登録バリデーション開始");
+
+	    if (StringUtils.isEmpty(form.getCenterName())) {
+	        bindingResult.rejectValue("centerName", "CENTER_NAME_EMPTY_ERROR_MESSAGE", MessageUtil.getMessage(ErrorMessage.CENTER_REGISTER_MAST));
+	        System.out.println("Error set for centerName: " + ErrorMessage.CENTER_SEARCH_NOT_RESULT_MESSAGE);
+	        return;
+	    }
+	    
+	    //追記
+	    if (form.getCenterName() != null && validateStringField(form.getCenterName(), bindingResult, "centerName")) return;
+
+	    if (StringUtils.isEmpty(form.getPostCode())) {
+	        bindingResult.rejectValue("postCode", "POST_CODE_EMPTY_ERROR_MESSAGE", MessageUtil.getMessage(ErrorMessage.CENTER_REGISTER_MAST));
+	        return;
+	    }
+	    
+	    //追記
+	    if (form.getPostCode() != null && validateStringField(form.getPostCode(), bindingResult, "postCode")) return;
+
+	    if (StringUtils.isEmpty(form.getAddress())) {
+	        bindingResult.rejectValue("address", "ADDRESS_EMPTY_ERROR_MESSAGE", MessageUtil.getMessage(ErrorMessage.CENTER_REGISTER_MAST));
+	        return;
+	    }
+
+	    //追記
+	    if (form.getAddress() != null && validateStringField(form.getAddress(), bindingResult, "Address")) return;
+	    
+	    if (StringUtils.isEmpty(form.getPhoneNumber())) {
+	        bindingResult.rejectValue("phoneNumber", "PHONE_NUMBER_EMPTY_ERROR_MESSAGE", MessageUtil.getMessage(ErrorMessage.CENTER_REGISTER_MAST));
+	        return;
+	    }
+
+	    //追記
+	    if (form.getPhoneNumber() != null && validateStringField(form.getPhoneNumber(), bindingResult, "phoneNumber")) return;
+	    
+	    if (StringUtils.isEmpty(form.getManagerName())) {
+	        bindingResult.rejectValue("managerName", "MANAGER_NAME_EMPTY_ERROR_MESSAGE", MessageUtil.getMessage(ErrorMessage.CENTER_REGISTER_MAST));
+	        return;
+	    }
+
+	    //追記
+	    if (form.getManagerName() != null && validateStringField(form.getManagerName(), bindingResult, "managerName")) return;
+	    
+	    if (form.getMaxStorageCapacity() == null) {
+	        bindingResult.rejectValue("maxStorageCapacity", "MAX_STORAGE_CAPACITY_EMPTY_ERROR_MESSAGE", MessageUtil.getMessage(ErrorMessage.CENTER_REGISTER_MAST));
+	        return;
+	    }
+	    
+	    if (form.getCurrentStorageCapacity() == null) {
+	        bindingResult.rejectValue("currentStorageCapacity", "CURRENT_STORAGE_CAPACITY_EMPTY_ERROR_MESSAGE", MessageUtil.getMessage(ErrorMessage.CENTER_REGISTER_MAST));
+	        return;
+	    }
+	    
+	    if (form.getMaxStorageCapacity() != null && form.getCurrentStorageCapacity() != null) 
+	    {
+	    	if(form.getCurrentStorageCapacity() > form.getMaxStorageCapacity() )
+	    	{
+		        bindingResult.rejectValue("currentStorageCapacity", "CURRENT_STORAGE_CAPACITY_ERROR_MESSAGE",MessageUtil.getMessage(ErrorMessage.CENTER_REGISTER_UPDOWN_INVALID_MESSAGE));
+		        return;
+	    	}
+	    }
+
+	    System.out.println("登録バリデーション終了");
 	}
 	
+    private boolean validateStringField(String field, BindingResult bindingResult, String fieldName) {
+        if (ParmCheckUtil.isParameterInvalid(field)) 
+        {
+        	bindingResult.rejectValue(fieldName, "INVALID_INPUT_ERROR_MESSAGE",MessageUtil.getMessage(ErrorMessage.INVALID_INPUT_ERROR_MESSAGE));
+            return true;
+        }
+
+        if (field.length() > RegisterParams.REGISTER_MAX_LENGTH) 
+        {
+            bindingResult.rejectValue(fieldName,"CENTER_NAME_LENGTH_ERROR_MESSAGE", MessageUtil.getMessage(ErrorMessage.CENTER_NAME_LENGTH_ERROR_MESSAGE));
+            return true;
+        }
+
+        return false;
+    }
 }

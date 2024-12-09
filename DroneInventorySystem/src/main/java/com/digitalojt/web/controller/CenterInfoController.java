@@ -24,8 +24,7 @@ import com.digitalojt.web.entity.CenterInfo;
 import com.digitalojt.web.form.CenterInfoForm;
 import com.digitalojt.web.service.CenterInfoService;
 import com.digitalojt.web.util.MessageManager;
-import com.digitalojt.web.validation.CenterInfoFormValidatorImpl.RegisterValidatorImpl;
-import com.digitalojt.web.validation.CenterInfoFormValidatorImpl.SearchValidatorImpl;
+import com.digitalojt.web.validation.CenterInfoFormValidatorImpl;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -50,7 +49,10 @@ public class CenterInfoController extends AbstractController
 
 	/** メッセージソース */
 	private final MessageSource messageSource;
-
+	
+	
+	/** バリデータ */
+	private final CenterInfoFormValidatorImpl validator;
 	/**
 	 * 初期表示
 	 * 
@@ -92,53 +94,46 @@ public class CenterInfoController extends AbstractController
 	 * @return
 	 */
 	@PostMapping(UrlConsts.CENTER_INFO_SEARCH)
-	public String search(Model model, @Valid CenterInfoForm form, BindingResult bindingResult) 
-	{
+	public String search(Model model, @Valid CenterInfoForm form, BindingResult bindingResult) {
+	    logger.info(ScreenName.STOCK_CENETR + "の" + FeatureName.SEARCH + "を開始します。");
 
-		// ログの追加
-        logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.SEARCH+"を開始します。");
-        		
-        SearchValidatorImpl searchValidator = new SearchValidatorImpl();
-        
-		// Valid項目チェック
-        if (!searchValidator.isValid(form, bindingResult)) 
-		{
-			// エラーメッセージをプロパティファイルから取得
-			String errorMsg = MessageManager.getMessage(messageSource, bindingResult.getGlobalError().getDefaultMessage());
-			model.addAttribute("errorMsg", errorMsg);
+	    validator.validateSearch(form, bindingResult);
+	    if (bindingResult.hasErrors()) {
+	        if (bindingResult.getGlobalError() != null) 
+	        {
+	            String errorMsg = MessageManager.getMessage(messageSource, bindingResult.getGlobalError().getDefaultMessage());
+	            model.addAttribute("errorMsg", errorMsg);
+	        } else if (bindingResult.hasFieldErrors()) {
+	            bindingResult.getFieldErrors().forEach(error -> {
+	                System.out.println("Field Error: " + error.getField() + " - " + error.getDefaultMessage());
+	            });
+	            String errorMsg = bindingResult.getFieldError().getDefaultMessage();
+	            System.out.println("Retrieved Field Error Message: " + errorMsg);
+	            model.addAttribute("errorMsg", errorMsg);
+	        }
 
-			// 都道府県Enumをリストに変換
-			List<Region> regions = Arrays.asList(Region.values());
-
-			// 都道府県プルダウン情報をセット
-			model.addAttribute("regions", regions);
-			
-			//検索条件保持の為
+	        List<Region> regions = Arrays.asList(Region.values());
+	        model.addAttribute("regions", regions);
 	        model.addAttribute("CenterInfoForm", form);
 
-			return "admin/centerInfo/index";
-		}
+	        return "admin/centerInfo/index";
+	    }
 
-		// 在庫センター情報画面に表示するデータを取得→画面表示用に商品情報リストをセット
-		List<CenterInfo> centerInfoList = centerInfoService.getCenterInfoData(form.getCenterName(), form.getRegion(), form.getStorageCapacityFrom(),form.getStorageCapacityTo());
-		model.addAttribute("centerInfoList", centerInfoList);
-		
-		if (centerInfoList.isEmpty()) 
-        {
-            String errorMsg = messageSource.getMessage(ErrorMessage.CENTER_SEARCH_NOT_RESULT_MESSAGE, null, Locale.getDefault());
-            model.addAttribute("errorMsg", errorMsg);
-        }
+	    List<CenterInfo> centerInfoList = centerInfoService.getCenterInfoData(form.getCenterName(), form.getRegion(), form.getStorageCapacityFrom(), form.getStorageCapacityTo());
+	    model.addAttribute("centerInfoList", centerInfoList);
 
-		model.addAttribute("CenterInfoForm", form);
-		
-		// 都道府県Enumをリストに変換→都道府県プルダウン情報をセット
-		List<Region> regions = Arrays.asList(Region.values());
-		model.addAttribute("regions", regions);
+	    if (centerInfoList.isEmpty()) {
+	        String errorMsg = messageSource.getMessage(ErrorMessage.CENTER_SEARCH_NOT_RESULT_MESSAGE, null, Locale.getDefault());
+	        model.addAttribute("errorMsg", errorMsg);
+	    }
 
-		// ログの追加
-        logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.SEARCH+"を終了します。");
-		
-		return "admin/centerInfo/index";
+	    model.addAttribute("CenterInfoForm", form);
+	    List<Region> regions = Arrays.asList(Region.values());
+	    model.addAttribute("regions", regions);
+
+	    logger.info(ScreenName.STOCK_CENETR + "の" + FeatureName.SEARCH + "を終了します。");
+
+	    return "admin/centerInfo/index";
 	}
 	
 	/**
@@ -161,23 +156,30 @@ public class CenterInfoController extends AbstractController
 	
 	//新規登録処理
 	@PostMapping(UrlConsts.CENTER_REGISTERED)
-    public String register(@ModelAttribute @Valid CenterInfoForm form,BindingResult bindingResult,Model model) 
-    {	
-		RegisterValidatorImpl registerValidator = new RegisterValidatorImpl();
-		
-		 if (!registerValidator.isValid(form, bindingResult)) 
-		{
-			String errorMsg = MessageManager.getMessage(messageSource, bindingResult.getGlobalError().getDefaultMessage());
-			model.addAttribute("errorMsg", errorMsg);
-			model.addAttribute("CenterInfoForm", form);
-	        // バリデーションエラーがある場合、エラーメッセージを表示する画面にリダイレクト
+	public String register(@ModelAttribute @Valid CenterInfoForm form, BindingResult bindingResult, Model model) {
+	    logger.info(ScreenName.STOCK_CENETR + "の" + FeatureName.REGISTER + "を開始します。");
+
+	    validator.validateRegister(form, bindingResult);
+	    if (bindingResult.hasErrors()) {
+	        if (bindingResult.getGlobalError() != null) {
+	            String errorMsg = MessageManager.getMessage(messageSource, bindingResult.getGlobalError().getDefaultMessage());
+	            model.addAttribute("errorMsg", errorMsg);
+	        } else if (bindingResult.hasFieldErrors()) {
+	            bindingResult.getFieldErrors().forEach(error -> {
+	                System.out.println("Field Error: " + error.getField() + " - " + error.getDefaultMessage());
+	            });
+	            String errorMsg = bindingResult.getFieldError().getDefaultMessage();
+	            System.out.println("Retrieved Field Error Message: " + errorMsg);
+	            model.addAttribute("errorMsg", errorMsg);
+	        }
+	        model.addAttribute("CenterInfoForm", form);
 	        return "admin/centerInfo/register";
-	    }		
-		centerInfoService.register(form);
-		// ログの追加
-        logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.REGISTER+"を終了します。");
-        return "redirect:/admin/centerInfo"; // 登録後に一覧画面にリダイレクト
-    }
+	    }
+
+	    centerInfoService.register(form);
+	    logger.info(ScreenName.STOCK_CENETR + "の" + FeatureName.REGISTER + "を終了します。");
+	    return "redirect:/admin/centerInfo";
+	}
 	
 	//更新画面移動
 	@GetMapping(UrlConsts.CENTER_UPDATE)
