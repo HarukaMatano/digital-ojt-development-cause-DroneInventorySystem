@@ -68,6 +68,7 @@
 							<th>管理者名</th>
 							<th>最大保存容量(m<sup>3</sup>)</th>
 							<th>現在保存容量(m<sup>3</sup>)</th>
+							<th>稼働ステータス</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -81,6 +82,11 @@
 							<td> [[${item.maxStorageCapacity}]] </td>
 							<td> [[${item.currentStorageCapacity}]] </td>
 						
+							<td>
+								<button th:class="${item.operationalStatus == 0 ? 'btn btn-success' : (item.operationalStatus == 1 ? 'btn btn-danger' : '')}">
+ 								 [[${item.operationalStatus == 0 ? '稼働中' : (item.operationalStatus == 1 ? '休止中' : '')}]]
+								</button>
+							</td>
 						</tr>
 					</tbody>
 				</table>
