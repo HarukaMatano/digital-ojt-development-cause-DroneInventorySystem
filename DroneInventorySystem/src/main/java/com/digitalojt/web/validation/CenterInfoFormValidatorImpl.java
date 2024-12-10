@@ -15,7 +15,7 @@ import jakarta.validation.ConstraintValidatorContext;
 
 @Component
 public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterInfoFormValidator, CenterInfoForm> {
-
+	
 	@Override
     public boolean isValid(CenterInfoForm form, ConstraintValidatorContext context) 
 	{
@@ -73,7 +73,8 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
 	    }
 
 	    if (form.getStorageCapacityFrom() != null && form.getStorageCapacityTo() != null) {
-	        if (form.getStorageCapacityFrom() > form.getStorageCapacityTo()) {
+	        if (form.getStorageCapacityFrom() > form.getStorageCapacityTo()) 
+	        {
 	            bindingResult.rejectValue("storageCapacityTo", "CENTER_SEARCH_UPDOWN_INVALID_MESSAGE", MessageUtil.getMessage(ErrorMessage.CENTER_SEARCH_UPDOWN_INVALID_MESSAGE));
 	            return;
 	        }
@@ -157,9 +158,14 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
 	    if (form.getNotes() != null && validateStringField(form.getNotes(), bindingResult, "Notes")) return;
 
 	    System.out.println("登録バリデーション終了");
+	    
+	    
 	}
 	
-    private boolean validateStringField(String field, BindingResult bindingResult, String fieldName) {
+		
+	
+    private boolean validateStringField(String field, BindingResult bindingResult, String fieldName) 
+    {
         if (ParmCheckUtil.isParameterInvalid(field)) 
         {
         	bindingResult.rejectValue(fieldName, "INVALID_INPUT_ERROR_MESSAGE",MessageUtil.getMessage(ErrorMessage.INVALID_INPUT_ERROR_MESSAGE));
@@ -174,4 +180,5 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
 
         return false;
     }
+    
 }

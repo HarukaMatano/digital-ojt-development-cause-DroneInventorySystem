@@ -39,4 +39,6 @@ public interface StockInfoRepository extends JpaRepository<StockInfo, Integer>
 			@Param("amount") Integer amount,
 			@Param("than") String than
 	);
+
+//	boolean existsByCenterId(Integer centerId);
 }

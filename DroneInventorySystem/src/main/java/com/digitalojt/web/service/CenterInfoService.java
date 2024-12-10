@@ -25,7 +25,7 @@ public class CenterInfoService
 
 	/** センター情報テーブル リポジトリー */
 	private final CenterInfoRepository repository;
-
+	
 	/**
 	 * 在庫センター情報を全件検索で取得
 	 * 
@@ -100,9 +100,8 @@ public class CenterInfoService
 		
 		//削除
 		public void delete(CenterInfoForm form) 
-	    {
+	    {	
 			CenterInfo centerInfo = repository.findByCenterId(form.getCenterId());
-			
 			centerInfo.setCenterName(form.getCenterName());
 	        centerInfo.setPostCode(form.getPostCode());
 	        centerInfo.setAddress(form.getAddress());
@@ -123,7 +122,7 @@ public class CenterInfoService
 		CenterInfo centerInfoList =repository.findByCenterId(id);
 		return centerInfoList;
 	}
-
+	
 }
 
 	

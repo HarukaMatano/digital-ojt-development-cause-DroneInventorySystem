@@ -6,6 +6,7 @@ import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +24,7 @@ import com.digitalojt.web.consts.UrlConsts;
 import com.digitalojt.web.entity.CenterInfo;
 import com.digitalojt.web.form.CenterInfoForm;
 import com.digitalojt.web.service.CenterInfoService;
+import com.digitalojt.web.service.StockInfoService;
 import com.digitalojt.web.util.MessageManager;
 import com.digitalojt.web.validation.CenterInfoFormValidatorImpl;
 
@@ -45,7 +47,12 @@ public class CenterInfoController extends AbstractController
 
 	
 	/** センター情報 サービス */
+    @Autowired
 	private final CenterInfoService centerInfoService;
+	
+	/** 在庫情報 サービス */
+	@Autowired
+	private final StockInfoService stockInfoService;
 
 	/** メッセージソース */
 	private final MessageSource messageSource;
@@ -265,10 +272,20 @@ public class CenterInfoController extends AbstractController
 		return "admin/centerInfo/delete"; 
     }
 	
-	//削除処理
+	//削除処理(修正中)
 	@PostMapping(UrlConsts.CENTER_DELETED)
 	public String deletedForm(@ModelAttribute CenterInfoForm form,Model model) 
 	{
+		// centerがstock_infoで使用されているか確認
+//	    boolean isUsedInStockInfo = stockInfoService.isCenterUsedInStockInfo(form.getCenterId());
+//	    
+//	    if (isUsedInStockInfo) 
+//	    {
+	        // 使用されている場合、エラーメッセージを追加して同じページに戻る
+//	    	model.addAttribute("errorMsg", "このセンターは在庫情報で使用されているため、削除できません。");
+//	        return "admin/centerInfo/delete";  // エラーメッセージと共に同じページに戻る
+//	    }
+		
 		//削除処理
 	        centerInfoService.delete(form);
 	        logger.info(ScreenName.STOCK_CENETR + "の" + FeatureName.DELETE + "を終了します。");
