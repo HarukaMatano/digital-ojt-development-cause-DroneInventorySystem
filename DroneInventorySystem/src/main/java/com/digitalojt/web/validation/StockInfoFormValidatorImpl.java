@@ -61,6 +61,15 @@ public class StockInfoFormValidatorImpl implements ConstraintValidator<StockInfo
                         .addConstraintViolation();
                 return false;
             }
+			
+			//個数のマイナス値
+			if(form.getAmount()<0)
+			{
+				context.disableDefaultConstraintViolation();
+                context.buildConstraintViolationWithTemplate(ErrorMessage.STOCK_AMOUNT_MINUS)
+                        .addConstraintViolation();
+                return false;
+			}
 		 }
 
 
