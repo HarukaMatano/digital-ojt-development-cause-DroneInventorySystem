@@ -277,14 +277,15 @@ public class CenterInfoController extends AbstractController
 	public String deletedForm(@ModelAttribute CenterInfoForm form,Model model) 
 	{
 		// centerがstock_infoで使用されているか確認
-//	    boolean isUsedInStockInfo = stockInfoService.isCenterUsedInStockInfo(form.getCenterId());
-//	    
-//	    if (isUsedInStockInfo) 
-//	    {
+	    boolean isUsedInStockInfo = stockInfoService.isCenterUsedInStockInfo(form.getCenterId());
+	    
+	    if (isUsedInStockInfo) 
+	    {
 	        // 使用されている場合、エラーメッセージを追加して同じページに戻る
-//	    	model.addAttribute("errorMsg", "このセンターは在庫情報で使用されているため、削除できません。");
-//	        return "admin/centerInfo/delete";  // エラーメッセージと共に同じページに戻る
-//	    }
+	    	model.addAttribute("errorMsg", "このセンターは在庫情報で使用されているため、削除できません。");
+	    	model.addAttribute("CenterInfoForm", form);
+	        return "admin/centerInfo/delete";  // エラーメッセージと共に同じページに戻る
+	    }
 		
 		//削除処理
 	        centerInfoService.delete(form);

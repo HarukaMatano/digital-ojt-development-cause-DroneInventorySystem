@@ -18,6 +18,10 @@
  			
 			<!-- 在庫センター情報登録単票 -->
 				
+			<!-- エラーメッセージの表示 -->
+ 				<div th:if="${errorMsg != null}" class="text-danger">
+					 <p th:text="${errorMsg}"></p>
+				</div>
 			
 				<form class="form-inline" method="post" th:action="@{'/admin/centerInfo/update/deleted'}" th:object="${CenterInfoForm}">
 					

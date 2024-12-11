@@ -61,8 +61,8 @@ public class StockInfoService
     }
 
     //削除可否
-//    public boolean isCenterUsedInStockInfo(Integer centerId) 
-//    {
-//        return repository.existsByCenterId(centerId);
-//    }
+    public boolean isCenterUsedInStockInfo(Integer centerId) 
+    {
+        return repository.existsByCenterId(centerId);
+    }
 }

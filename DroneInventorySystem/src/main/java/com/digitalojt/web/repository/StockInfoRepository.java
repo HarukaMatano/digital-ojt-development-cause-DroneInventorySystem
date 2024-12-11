@@ -39,6 +39,12 @@ public interface StockInfoRepository extends JpaRepository<StockInfo, Integer>
 			@Param("amount") Integer amount,
 			@Param("than") String than
 	);
-
-//	boolean existsByCenterId(Integer centerId);
+	
+	@Query("SELECT COUNT(s) > 0 FROM StockInfo s " +
+	           "JOIN s.centerinfo ci " +
+	           "WHERE s.deleteFlag = '0' " +
+	           "AND ci.deleteFlag = '0' " +
+	           "AND ci.operationalStatus = 0 " +
+	           "AND ci.id = :centerId")
+	    boolean existsByCenterId(@Param("centerId") Integer centerId);
 }
