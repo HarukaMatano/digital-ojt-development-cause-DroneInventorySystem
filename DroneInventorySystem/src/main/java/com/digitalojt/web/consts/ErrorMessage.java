@@ -54,4 +54,6 @@ public class ErrorMessage
 	public static final String CENTER_REGISTER_UPDOWN_INVALID_MESSAGE = "center.invalid.updown.register";
 	
 	public static final String CENTER_REGISTER_MAST = "center.mast";
+	
+	public static final String STOCK_AMOUNT_MINUS = "amount.minus.input";
 }
