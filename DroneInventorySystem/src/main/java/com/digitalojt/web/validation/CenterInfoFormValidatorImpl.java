@@ -55,6 +55,13 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
 
 	    if (form.getStorageCapacityFrom() != null) 
 	    {
+	    	if(form.getStorageCapacityFrom()<0)
+	    	{
+	    		bindingResult.rejectValue("storageCapacityFrom", "CENTER_UPDAWN_MINUS",MessageUtil.getMessage(ErrorMessage.CENTER_UPDAWN_MINUS));
+	    		return;
+	    	}
+	    	
+	    	
 	        try {
 	            Integer.parseInt(form.getStorageCapacityFrom().toString());
 	        } catch (NumberFormatException e) {
@@ -64,6 +71,14 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
 	    }
 
 	    if (form.getStorageCapacityTo() != null) {
+	    	
+	    	if(form.getStorageCapacityTo()<0)
+	    	{
+	    		bindingResult.rejectValue("storageCapacityTo", "CENTER_UPDAWN_MINUS",MessageUtil.getMessage(ErrorMessage.CENTER_UPDAWN_MINUS));
+	    		return;
+	    	}
+	    	
+	    	
 	        try {
 	            Integer.parseInt(form.getStorageCapacityTo().toString());
 	        } catch (NumberFormatException e) {
@@ -138,11 +153,26 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
 	        return;
 	    }
 	    
+	    //マイナス値
+	    if(form.getMaxStorageCapacity()<0)
+	    {
+	    	bindingResult.rejectValue("maxStorageCapacity", "CENTER_CAPACITY_MINUS", MessageUtil.getMessage(ErrorMessage.CENTER_CAPACITY_MINUS));
+	        return;
+	    }
+	    
 	    //必須項目
 	    if (form.getCurrentStorageCapacity() == null) {
 	        bindingResult.rejectValue("currentStorageCapacity", "CURRENT_STORAGE_CAPACITY_EMPTY_ERROR_MESSAGE", MessageUtil.getMessage(ErrorMessage.CENTER_REGISTER_MAST));
 	        return;
 	    }
+	    
+	    //マイナス値
+	    if(form.getCurrentStorageCapacity()<0)
+	    {
+	    	bindingResult.rejectValue("currentStorageCapacity", "CENTER_CAPACITY_MINUS", MessageUtil.getMessage(ErrorMessage.CENTER_CAPACITY_MINUS));
+	        return;
+	    }
+	    
 	    
 	    //大小関係
 	    if (form.getMaxStorageCapacity() != null && form.getCurrentStorageCapacity() != null) 
