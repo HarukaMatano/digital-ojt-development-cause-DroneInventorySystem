@@ -56,11 +56,9 @@ public class ErrorMessage
 	public static final String CENTER_REGISTER_MAST = "center.mast";
 	
 	public static final String STOCK_AMOUNT_MINUS = "amount.minus.input";
-<<<<<<< HEAD
-=======
-	
+
 	public static final String CENTER_UPDAWN_MINUS = "center.minus.input";
 	
 	public static final String CENTER_CAPACITY_MINUS = "center.minus.input.cap";
->>>>>>> test-feature-centerInfo
+
 }

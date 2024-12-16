@@ -188,7 +188,18 @@ public class CenterInfoController extends AbstractController
 	    }
 
 	    //登録処理
-	    centerInfoService.register(form);
+	    try 
+	    {
+	    	centerInfoService.register(form);
+	    }
+	    catch(Exception e) 
+	    {
+	    	String errorMsg = "登録処理中にエラーが発生しました";
+            model.addAttribute("errorMsg", errorMsg);
+            model.addAttribute("CenterInfoForm", form);
+	    	return "admin/centerInfo/register";
+	    }
+	    
 	    logger.info(ScreenName.STOCK_CENETR + "の" + FeatureName.REGISTER + "を終了します。");
 	    return "redirect:/admin/centerInfo";
 	}
@@ -241,8 +252,20 @@ public class CenterInfoController extends AbstractController
 	        return "admin/centerInfo/register";
 	    }
 	    
-	    //更新処理
-        centerInfoService.update(form);        
+	    //更新処理    
+	    try 
+	    {
+	    	centerInfoService.update(form);   
+        
+	    }
+	    catch(Exception e) 
+	    {
+	    	String errorMsg = "更新処理中にエラーが発生しました";
+	        model.addAttribute("errorMsg", errorMsg);
+	        model.addAttribute("CenterInfoForm", form);
+	    	return "admin/centerInfo/register";
+	    }
+        
      // ログの追加
         logger.info(ScreenName.STOCK_CENETR+"の"+FeatureName.UPDATE+"を終了します。");
         
@@ -288,7 +311,18 @@ public class CenterInfoController extends AbstractController
 	    }
 		
 		//削除処理
+	    try 
+	    {
 	        centerInfoService.delete(form);
+	    }
+	    catch(Exception e) 
+	    {
+	    	String errorMsg = "削除処理中にエラーが発生しました";
+	        model.addAttribute("errorMsg", errorMsg);
+	        model.addAttribute("CenterInfoForm", form);
+	    	return "admin/centerInfo/delete";
+	    }        
+	        
 	        logger.info(ScreenName.STOCK_CENETR + "の" + FeatureName.DELETE + "を終了します。");
 	        return "redirect:/admin/centerInfo"; // 削除後に一覧画面にリダイレクト
 	}

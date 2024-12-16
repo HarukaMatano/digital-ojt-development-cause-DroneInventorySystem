@@ -10,6 +10,7 @@ import com.digitalojt.web.entity.CenterInfo;
 import com.digitalojt.web.form.CenterInfoForm;
 import com.digitalojt.web.repository.CenterInfoRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -61,6 +62,7 @@ public class CenterInfoService
 	}
 	
 	//登録
+	@Transactional
 	public void register(CenterInfoForm form) 
     {
         CenterInfo centerInfo = new CenterInfo();
@@ -77,9 +79,17 @@ public class CenterInfoService
         centerInfo.setUpdateDate(Timestamp.valueOf(LocalDateTime.now()));
         centerInfo.setDeleteFlag("0");      
         repository.save(centerInfo); // データベースに保存
+        
+     // 意図的に例外を発生させる
+//        if (true) 
+//        {
+//            throw new RuntimeException("意図的な例外発生");
+//        }
+
     }
 	
 	//更新
+		@Transactional
 		public void update(CenterInfoForm form) 
 	    {
 	        CenterInfo centerInfo = repository.findByCenterId(form.getCenterId());
@@ -96,9 +106,15 @@ public class CenterInfoService
 	        centerInfo.setUpdateDate(Timestamp.valueOf(LocalDateTime.now()));
 	        centerInfo.setDeleteFlag("0");        
 	        repository.save(centerInfo); // データベースに保存
+	        
+//	        if (true) 
+//	        {
+//	            throw new RuntimeException("意図的な例外発生");
+//	        }
 	    }
 		
 		//削除
+		@Transactional
 		public void delete(CenterInfoForm form) 
 	    {	
 			CenterInfo centerInfo = repository.findByCenterId(form.getCenterId());
@@ -114,6 +130,11 @@ public class CenterInfoService
 	        centerInfo.setUpdateDate(Timestamp.valueOf(LocalDateTime.now()));
 	        centerInfo.setDeleteFlag("1");        
 	        repository.save(centerInfo); // データベースに保存
+	        
+//	        if (true) 
+//	        {
+//	            throw new RuntimeException("意図的な例外発生");
+//	        }
 	    }
 	
 	//ID検索
