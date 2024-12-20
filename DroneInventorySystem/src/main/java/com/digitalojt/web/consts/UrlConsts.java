@@ -44,13 +44,20 @@ public class UrlConsts {
 	// 在庫センター情報画面 削除
 	public static final String CENTER_DELETED = "/admin/centerInfo/update/deleted";
 
-	// 認証不要画面
-	public static final String[] NO_AUTHENTICATION = {LOGIN, AUTHENTICATE};
-	
-	//以下追記↓
 	//分類情報管理画面
 	public static final String CATEGORY_INFO = "/admin/categoryInfo";
 	
 	//分類情報管理画面 検索
 	public static final String CATEGORY_INFO_SEARCH = "/admin/categoryInfo/search";
+	
+	// 認証不要画面
+	public static final String[] NO_AUTHENTICATION = {LOGIN, AUTHENTICATE};
+	
+	//以下追記(不具合改修)↓
+	// 操作履歴画面
+	public static final String  OPERATION_LOG = "/admin/operationLog";
+	
+	// 操作履歴画面 検索
+	public static final String  OPERATION_LOG_SEARCH = "/admin/operationLog/search";
+
 }
