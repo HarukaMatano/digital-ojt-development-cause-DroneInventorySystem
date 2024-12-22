@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.digitalojt.web.consts.OperationStatus;
 import com.digitalojt.web.consts.OperationType;
+import com.digitalojt.web.consts.PageAmount;
 import com.digitalojt.web.consts.ScreenTitle;
 import com.digitalojt.web.entity.OperationLog;
 import com.digitalojt.web.repository.OperationLogRepository;
@@ -38,7 +39,7 @@ public class OperationLogService
 	public List<OperationLog> getOperationLogList() 
 	{
 		LocalDateTime month= LocalDateTime.now().minus(1,ChronoUnit.MONTHS);
-		PageRequest pageable = PageRequest.of(0, 1000); // 取得件数を制限
+		PageRequest pageable = PageRequest.of(0, PageAmount.PageMax); // 取得件数を制限
 
 		// 操作履歴情報の取得
 //		List<OperationLog> operationLogList = repository.findAll();
