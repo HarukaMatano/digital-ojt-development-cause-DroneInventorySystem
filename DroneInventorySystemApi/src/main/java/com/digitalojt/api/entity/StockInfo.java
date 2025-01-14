@@ -14,6 +14,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 在庫情報Entity
+ * 
+ * @author haruka matano
+ *
+ */
 @Entity
 @Data
 @NoArgsConstructor

@@ -8,7 +8,11 @@ import com.digitalojt.api.entity.StockInfo;
 import com.digitalojt.api.repository.StockInfoRepository;
 
 import lombok.RequiredArgsConstructor;
-
+/**
+ * 在庫情報画面のサービスクラス
+ *
+ * @author haruka matano
+ */
 @Service
 @RequiredArgsConstructor
 public class StockInfoService 

@@ -12,6 +12,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * センター情報Entity
+ * 
+ * @author haruka matano
+ *
+ */
 @Entity
 @Data
 @NoArgsConstructor

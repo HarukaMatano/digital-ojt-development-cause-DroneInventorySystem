@@ -9,6 +9,11 @@ import com.digitalojt.api.repository.CategoryInfoRepository;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * 分類情報画面のサービスクラス
+ *
+ * @author haruka matano
+ */
 @Service
 @RequiredArgsConstructor
 public class CategoryInfoService 
