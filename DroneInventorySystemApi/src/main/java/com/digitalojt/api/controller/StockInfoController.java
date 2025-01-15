@@ -33,7 +33,7 @@ public class StockInfoController
 		return stockInfoService.getStockInfoAll();
 	}
 	
-	//稼働中在庫情報
+	//稼働中の保管場所の在庫情報
 	@GetMapping("/active")
 	public List<StockInfo> getByActive()
 	{

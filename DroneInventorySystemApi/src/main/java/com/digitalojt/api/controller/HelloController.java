@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController 
 {
+	//文字列を表示するだけ
 	@RequestMapping("/hello")
 	public String home()
 	{

@@ -13,7 +13,7 @@ public interface StockInfoRepository extends JpaRepository<StockInfo,Integer>
 	//名前検索による取得
 	List<StockInfo> findByName(String name);
 	
-	//稼働中の在庫情報取得
+	//稼働中の保管場所の在庫情報取得
 	@Query("SELECT s FROM StockInfo s " +
 	           "JOIN s.categoryinfo c " +
 	           "JOIN s.centerinfo ci " +
