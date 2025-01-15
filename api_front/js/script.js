@@ -2,7 +2,7 @@ const apiUrl='http://localhost:8080/stock-info/active';
 const categoryApiUrl = 'http://localhost:8080/category-info'; // 分類名を取得するAPIのURL
 
 const stockList =document.getElementById('stock-list');
-    
+
 // 検索フォームの枠を生成
 const searchContainer = document.createElement('div');
 searchContainer.classList.add('search-container');
@@ -73,9 +73,7 @@ searchContainer.appendChild(searchButton);
 
 // 検索コンテナをstockListに追加
 stockList.appendChild(searchContainer);
-    
-    
-    
+
 // 分類名をAPIから取得してプルダウンメニューに表示
 fetch(categoryApiUrl)
     .then(response => {
@@ -97,60 +95,74 @@ fetch(categoryApiUrl)
     });
 
 fetch(apiUrl)
-	.then(response =>{
-		if(!response.ok){
-			throw new Error(`HTTPエラー！ステータスコード: ${response.status}`);
-		}
-		return response.json();
-	})
-	.then(data =>{
-		
-		const tableResponsive = document.createElement('div');
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTPエラー！ステータスコード: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+
+        const tableResponsive = document.createElement('div');
         tableResponsive.classList.add('table-responsive');
-		
-		const table=document.createElement('table');
-		
-		table.classList.add('table', 'table-bordered');
-	
-		const thead = document.createElement('thead');
-		const tbody=document.createElement('tbody');
-		
-		const headerRow = document.createElement('tr');
-		const headers = ['分類','名称','個数','保管場所','説明',];
-		headers.forEach(headerText=>{
-			const th = document.createElement('th');
-			th.textContent=headerText;
-			headerRow.appendChild(th);
-		});
-		thead.appendChild(headerRow);
-		
-		data.forEach(stockInfo=>{
-			const row = document.createElement('tr');
-			const cells =[
-				stockInfo.categoryinfo.categoryName,
-				stockInfo.name,
-				stockInfo.amount,
-				stockInfo.centerinfo.centerName,
-				stockInfo.description
-			];
-			cells.forEach(cellText=>{
-				const td = document.createElement('td');
-				td.textContent=cellText;
-				row.appendChild(td);
-				});
-				tbody.appendChild(row);
-			});
-			
-			table.appendChild(thead);
-			table.appendChild(tbody);
-			stockList.appendChild(table);
-						
-			// 分類名が選択されたときに名称のプルダウンメニューを更新
+
+        const table = document.createElement('table');
+
+        table.classList.add('table', 'table-bordered');
+
+        const thead = document.createElement('thead');
+        const tbody = document.createElement('tbody');
+
+        const headerRow = document.createElement('tr');
+        const headers = ['分類', '名称', '個数', '保管場所', '説明'];
+        headers.forEach(headerText => {
+            const th = document.createElement('th');
+            th.textContent = headerText;
+            headerRow.appendChild(th);
+        });
+        thead.appendChild(headerRow);
+
+        data.forEach(stockInfo => {
+            const row = document.createElement('tr');
+            const cells = [
+                stockInfo.categoryinfo.categoryName,
+                stockInfo.name,
+                stockInfo.amount,
+                stockInfo.centerinfo.centerName,
+                stockInfo.description
+            ];
+            cells.forEach(cellText => {
+                const td = document.createElement('td');
+                td.textContent = cellText;
+                row.appendChild(td);
+            });
+            tbody.appendChild(row);
+        });
+
+        table.appendChild(thead);
+        table.appendChild(tbody);
+        stockList.appendChild(table);
+
+        // 最初にすべての名称を表示
+        const allNames = data.map(stockInfo => stockInfo.name);
+        allNames.forEach(name => {
+            const option = document.createElement('option');
+            option.value = name;
+            option.textContent = name;
+            nameSelect.appendChild(option);
+        });
+
+        // 分類名が選択されたときに名称のプルダウンメニューを更新
         categorySelect.addEventListener('change', () => {
             const selectedCategory = categorySelect.value;
-            const names = data
-                .filter(stockInfo => stockInfo.categoryinfo.categoryName === selectedCategory)
-                .map(stockInfo => stockInfo.name);
+            let names;
+            if (selectedCategory) {
+                names = data
+                    .filter(stockInfo => stockInfo.categoryinfo.categoryName === selectedCategory)
+                    .map(stockInfo => stockInfo.name);
+            } else {
+                names = allNames;
+            }
             nameSelect.innerHTML = ''; // 既存のオプションをクリア
             const defaultNameOption = document.createElement('option');
             defaultNameOption.value = '';
@@ -163,45 +175,68 @@ fetch(apiUrl)
                 nameSelect.appendChild(option);
             });
         });
-        
-         // 検索ボタン押下後の動作を追加
+
+        // 検索ボタン押下後の動作を追加
         searchButton.addEventListener('click', () => {
-            const selectedCategory = categorySelect.value.toLowerCase();
-            const selectedName = nameSelect.value.toLowerCase();
+            const selectedCategory = categorySelect.value;
+            const selectedName = nameSelect.value;
             const amount = amountInput.value ? parseInt(amountInput.value) : null;
             const amountCondition = amountConditionSelect.value;
 
-            const filteredData = data.filter(stockInfo => {
-                const categoryMatch = selectedCategory ? stockInfo.categoryinfo.categoryName.toLowerCase().includes(selectedCategory) : true;
-                const nameMatch = selectedName ? stockInfo.name.toLowerCase().includes(selectedName) : true;
-                const amountMatch = amount !== null ? (amountCondition === '以上' ? stockInfo.amount >= amount : stockInfo.amount <= amount) : true;
-                return categoryMatch && nameMatch && amountMatch;
-            });
+            // APIエンドポイントのURLを構築
+            let searchApiUrl = `http://localhost:8080/stock-info`;
 
-            // テーブルを更新
-            tbody.innerHTML = ''; // 既存の行をクリア
-            filteredData.forEach(stockInfo => {
-                const row = document.createElement('tr');
-                const cells = [
-                    stockInfo.categoryinfo.categoryName,
-                    stockInfo.name,
-                    stockInfo.amount,
-                    stockInfo.centerinfo.centerName,
-                    stockInfo.description
-                ];
-                cells.forEach(cellText => {
-                    const td = document.createElement('td');
-                    td.textContent = cellText;
-                    row.appendChild(td);
+            if (selectedCategory) {
+                searchApiUrl += `/category/${selectedCategory}`;
+            }
+            if (selectedName) {
+                searchApiUrl += `/name/${selectedName}`;
+            }
+            if (amount !== null) {
+                searchApiUrl += `/amount/${amount}`;
+            }
+            if (amountCondition) {
+                searchApiUrl += `/than/${amountCondition}`;
+            }
+
+            console.log(searchApiUrl); // ここでURLをコンソールに出力
+
+            // APIを呼び出してデータを取得
+            fetch(searchApiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTPエラー！ステータスコード: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(filteredData => {
+                    console.log(filteredData); // ここでデータをコンソールに出力
+                    // テーブルを更新
+                    tbody.innerHTML = ''; // 既存の行をクリア
+                    filteredData.forEach(stockInfo => {
+                        const row = document.createElement('tr');
+                        const cells = [
+                            stockInfo.categoryinfo.categoryName,
+                            stockInfo.name,
+                            stockInfo.amount,
+                            stockInfo.centerinfo.centerName,
+                            stockInfo.description
+                        ];
+                        cells.forEach(cellText => {
+                            const td = document.createElement('td');
+                            td.textContent = cellText;
+                            row.appendChild(td);
+                        });
+                        tbody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('データの取得中にエラーが発生しました:', error);
                 });
-                tbody.appendChild(row);
-            });
         });
-			
-		})
-		
-		.catch(error => {
-			console.error('データの取得中にエラーが発生しました:',error);
-			categoryList.innerHTML='データ取得中にエラーが発生しました。';
-		});
-	
+
+    })
+    .catch(error => {
+        console.error('データの取得中にエラーが発生しました:', error);
+        categoryList.innerHTML = 'データ取得中にエラーが発生しました。';
+    });

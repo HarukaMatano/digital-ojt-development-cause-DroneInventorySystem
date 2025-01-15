@@ -31,16 +31,46 @@ public class StockInfoService
 	    return stockInfoRepository.findActiveStockInfo();
 	}
 	
-	//名前検索による取得
+	//カテゴリ名、名前、個数による取得
+	public List<StockInfo> getStockInfoByCategoryAndNameAndAmount(String category,String name,Integer amount,String than)
+	{
+		return stockInfoRepository.findByCategoryAndNameAndAmount(category, name, amount, than);
+	}
+	
+	//カテゴリ名、名前による取得
+	public List<StockInfo> getStockInfoByCategoryAndName(String category,String name)
+	{
+		return stockInfoRepository.findByCategoryAndName(category, name);
+	}
+	
+	//カテゴリ名、個数による取得
+	public List<StockInfo> getStockInfoByCategoryAndAmount(String category,Integer amount,String than)
+	{
+		return stockInfoRepository.findByCategoryAndAmount(category,amount, than);
+	}
+		
+	//名前、個数による取得
+	public List<StockInfo> getStockInfoByNameAndAmount(String name,Integer amount,String than)
+	{
+		return stockInfoRepository.findByNameAndAmount(name, amount, than);
+	}
+	
+	//カテゴリ名による取得
+	public List<StockInfo> getStockInfoByCategory(String category)
+	{
+		return stockInfoRepository.findByCategory(category);
+	}
+	
+	//名前による取得
 	public List<StockInfo> getStockInfoByName(String name)
 	{
 		return stockInfoRepository.findByName(name);
 	}
 	
-	//カテゴリ名、名前、個数による取得
-	public List<StockInfo> getStockInfoByCategoryAndNameAndAmount(String category,String name,Integer amount,String than)
+	//個数による取得
+	public List<StockInfo> getStockInfoByAmount(Integer amount,String than)
 	{
-		return stockInfoRepository.findByCategoryAndNameAndAmount(category, name, amount, than);
+		return stockInfoRepository.findByAmount(amount, than);
 	}
 	
 }

@@ -40,18 +40,53 @@ public class StockInfoController
 		 return stockInfoService.getActiveStockInfoData();
 	}
 	
-	//名前検索による取得
-	@GetMapping("/name/{name}")
-	public List<StockInfo> getByName(@PathVariable String name)
-	{
-		 return stockInfoService.getStockInfoByName(name);
-	}
-	
 	//カテゴリ名、名前、個数による取得
 	@GetMapping("/category/{category}/name/{name}/amount/{amount}/than/{than}")
 	public List<StockInfo> getByCategoryAndNameAndAmount(@PathVariable String category,@PathVariable String name,@PathVariable Integer amount,@PathVariable String than)
 	{
 		 return stockInfoService.getStockInfoByCategoryAndNameAndAmount(category,name,amount,than);
 	}
+	
+	//カテゴリ名、名前による取得
+	@GetMapping("/category/{category}/name/{name}")
+	public List<StockInfo> getByCategoryAndName(@PathVariable String category,@PathVariable String name)
+	{
+		return stockInfoService.getStockInfoByCategoryAndName(category,name);
+	}
+	
+	//カテゴリ名、個数による取得
+	@GetMapping("/category/{category}/amount/{amount}/than/{than}")
+	public List<StockInfo> getByCategoryAndAmount(@PathVariable String category,@PathVariable Integer amount,@PathVariable String than)
+	{
+		 return stockInfoService.getStockInfoByCategoryAndAmount(category,amount,than);
+	}	
+	
+	//名前、個数による取得
+	@GetMapping("/name/{name}/amount/{amount}/than/{than}")
+	public List<StockInfo> getByNameAndAmount(@PathVariable String name,@PathVariable Integer amount,@PathVariable String than)
+	{
+		 return stockInfoService.getStockInfoByNameAndAmount(name,amount,than);
+	}
+	
+	//カテゴリ名による取得
+	@GetMapping("/category/{category}")
+	public List<StockInfo> getByCategory(@PathVariable String category)
+	{
+		 return stockInfoService.getStockInfoByCategory(category);
+	}
+	
+	//名前による取得
+	@GetMapping("/name/{name}")
+	public List<StockInfo> getByCName(@PathVariable String name)
+	{
+		 return stockInfoService.getStockInfoByName(name);
+	}		
+				 
+	//個数による取得
+	@GetMapping("/amount/{amount}/than/{than}")
+	public List<StockInfo> getByAmount(@PathVariable Integer amount,@PathVariable String than)
+	{
+		return stockInfoService.getStockInfoByAmount(amount,than);
+	}				
 	
 }
