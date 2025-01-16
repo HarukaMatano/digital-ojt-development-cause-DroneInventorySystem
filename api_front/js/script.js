@@ -1,5 +1,6 @@
 const apiUrl='http://localhost:8080/stock-info/active';
 const categoryApiUrl = 'http://localhost:8080/category-info'; // 分類名を取得するAPIのURL
+const nameApiUrl = 'http://localhost:8080/stock-info/category'; // 名称を取得するAPIのURL
 
 const stockList =document.getElementById('stock-list');
 
@@ -94,6 +95,8 @@ fetch(categoryApiUrl)
         console.error('分類名の取得中にエラーが発生しました:', error);
     });
 
+let allNames = []; // すべての名称を保持する変数
+
 fetch(apiUrl)
     .then(response => {
         if (!response.ok) {
@@ -144,7 +147,7 @@ fetch(apiUrl)
         stockList.appendChild(table);
 
         // 最初にすべての名称を表示
-        const allNames = data.map(stockInfo => stockInfo.name);
+        allNames = data.map(stockInfo => stockInfo.name);
         allNames.forEach(name => {
             const option = document.createElement('option');
             option.value = name;
@@ -152,91 +155,111 @@ fetch(apiUrl)
             nameSelect.appendChild(option);
         });
 
-        // 分類名が選択されたときに名称のプルダウンメニューを更新
-        categorySelect.addEventListener('change', () => {
-            const selectedCategory = categorySelect.value;
-            let names;
-            if (selectedCategory) {
-                names = data
-                    .filter(stockInfo => stockInfo.categoryinfo.categoryName === selectedCategory)
-                    .map(stockInfo => stockInfo.name);
-            } else {
-                names = allNames;
-            }
-            nameSelect.innerHTML = ''; // 既存のオプションをクリア
-            const defaultNameOption = document.createElement('option');
-            defaultNameOption.value = '';
-            defaultNameOption.textContent = '名称を選択';
-            nameSelect.appendChild(defaultNameOption);
-            names.forEach(name => {
-                const option = document.createElement('option');
-                option.value = name;
-                option.textContent = name;
-                nameSelect.appendChild(option);
-            });
-        });
-
-        // 検索ボタン押下後の動作を追加
-        searchButton.addEventListener('click', () => {
-            const selectedCategory = categorySelect.value;
-            const selectedName = nameSelect.value;
-            const amount = amountInput.value ? parseInt(amountInput.value) : null;
-            const amountCondition = amountConditionSelect.value;
-
-            // APIエンドポイントのURLを構築
-            let searchApiUrl = `http://localhost:8080/stock-info`;
-
-            if (selectedCategory) {
-                searchApiUrl += `/category/${selectedCategory}`;
-            }
-            if (selectedName) {
-                searchApiUrl += `/name/${selectedName}`;
-            }
-            if (amount !== null) {
-                searchApiUrl += `/amount/${amount}`;
-            }
-            if (amountCondition) {
-                searchApiUrl += `/than/${amountCondition}`;
-            }
-
-            console.log(searchApiUrl); // ここでURLをコンソールに出力
-
-            // APIを呼び出してデータを取得
-            fetch(searchApiUrl)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTPエラー！ステータスコード: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(filteredData => {
-                    console.log(filteredData); // ここでデータをコンソールに出力
-                    // テーブルを更新
-                    tbody.innerHTML = ''; // 既存の行をクリア
-                    filteredData.forEach(stockInfo => {
-                        const row = document.createElement('tr');
-                        const cells = [
-                            stockInfo.categoryinfo.categoryName,
-                            stockInfo.name,
-                            stockInfo.amount,
-                            stockInfo.centerinfo.centerName,
-                            stockInfo.description
-                        ];
-                        cells.forEach(cellText => {
-                            const td = document.createElement('td');
-                            td.textContent = cellText;
-                            row.appendChild(td);
-                        });
-                        tbody.appendChild(row);
-                    });
-                })
-                .catch(error => {
-                    console.error('データの取得中にエラーが発生しました:', error);
-                });
-        });
-
     })
     .catch(error => {
         console.error('データの取得中にエラーが発生しました:', error);
         categoryList.innerHTML = 'データ取得中にエラーが発生しました。';
     });
+
+// 分類名が選択されたときに名称のプルダウンメニューを更新
+categorySelect.addEventListener('change', () => {
+    const selectedCategory = categorySelect.value;
+    if (selectedCategory) {
+        fetch(`${nameApiUrl}/${selectedCategory}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTPエラー！ステータスコード: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(names => {
+                nameSelect.innerHTML = ''; // 既存のオプションをクリア
+                const defaultNameOption = document.createElement('option');
+                defaultNameOption.value = '';
+                defaultNameOption.textContent = '名称を選択';
+                nameSelect.appendChild(defaultNameOption);
+                names.forEach(name => {
+                    const option = document.createElement('option');
+                    option.value = name.name; // APIのレスポンスに合わせてプロパティ名を変更
+                    option.textContent = name.name; // APIのレスポンスに合わせてプロパティ名を変更
+                    nameSelect.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('名称の取得中にエラーが発生しました:', error);
+            });
+    } else {
+        nameSelect.innerHTML = ''; // 既存のオプションをクリア
+        const defaultNameOption = document.createElement('option');
+        defaultNameOption.value = '';
+        defaultNameOption.textContent = '名称を選択';
+        nameSelect.appendChild(defaultNameOption);
+        // すべての名称を再度表示
+        allNames.forEach(name => {
+            const option = document.createElement('option');
+            option.value = name;
+            option.textContent = name;
+            nameSelect.appendChild(option);
+        });
+    }
+});
+
+// 検索ボタン押下後の動作を追加
+searchButton.addEventListener('click', () => {
+    const selectedCategory = categorySelect.value;
+    const selectedName = nameSelect.value;
+    const amount = amountInput.value ? parseInt(amountInput.value) : null;
+    const amountCondition = amountConditionSelect.value;
+
+    // APIエンドポイントのURLを構築
+    let searchApiUrl = `http://localhost:8080/stock-info`;
+
+    if (selectedCategory) {
+        searchApiUrl += `/category/${selectedCategory}`;
+    }
+    if (selectedName) {
+        searchApiUrl += `/name/${selectedName}`;
+    }
+    if (amount !== null) {
+        searchApiUrl += `/amount/${amount}`;
+    }
+    if (amountCondition) {
+        searchApiUrl += `/than/${amountCondition}`;
+    }
+
+    console.log(searchApiUrl); // ここでURLをコンソールに出力
+
+    // APIを呼び出してデータを取得
+    fetch(searchApiUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTPエラー！ステータスコード: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(filteredData => {
+            console.log(filteredData); // ここでデータをコンソールに出力
+            // テーブルを更新
+            const tbody = document.querySelector('tbody');
+            tbody.innerHTML = ''; // 既存の行をクリア
+            filteredData.forEach(stockInfo => {
+                const row = document.createElement('tr');
+                const cells = [
+                    stockInfo.categoryinfo.categoryName,
+                    stockInfo.name,
+                    stockInfo.amount,
+                    stockInfo.centerinfo.centerName,
+                    stockInfo.description
+                ];
+                cells.forEach(cellText => {
+                    const td = document.createElement('td');
+                    td.textContent = cellText;
+                    row.appendChild(td);
+                });
+                tbody.appendChild(row);
+            });
+        })
+        .catch(error => {
+            console.error('データの取得中にエラーが発生しました:', error);
+        });
+});
