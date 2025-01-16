@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+	<title>カテゴリーリスト</title>
+	<style>
+		.category-table
+		{
+			width:100%;
+			border-collapse:collapse;
+			margin:20px 0;
+			font-size:18px;
+			text-align:left;
+		}
+		
+		.category-table th, .category-table td
+		{
+			padding:12px 15px;
+			border: 1px solid #ddd;
+		}
+		
+		.category-table th
+		{
+			background-color: #f4f4f4;
+			color: #333;
+		}
+		
+		.category-table tr:nth-child(even)
+		{
+			background-color: #f9f9f9;
+		}
+		.category-table tr:hover
+		{
+			background-color: #f1f1f1;
+		}
+	</style>
+	
+</head>
+<body>
+	<h1>カテゴリー一覧</h1>
+	<div id="category-list"></div>
+	<script src="js/script.js"></script>
+</body>
+</html>
