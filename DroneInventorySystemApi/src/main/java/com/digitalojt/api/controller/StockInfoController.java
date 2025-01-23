@@ -1,17 +1,24 @@
 package com.digitalojt.api.controller;
 
 import java.util.List;
+import java.util.function.Supplier;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.digitalojt.api.consts.FeatureName;
+import com.digitalojt.api.consts.ScreenName;
 import com.digitalojt.api.entity.StockInfo;
 import com.digitalojt.api.service.StockInfoService;
 
 import lombok.RequiredArgsConstructor;
+
 /**
  * 在庫画面コントローラークラス
  * 
@@ -21,72 +28,43 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/stock-info")
 @RequiredArgsConstructor
-@CrossOrigin(origins="*")
-public class StockInfoController 
-{
-	private final StockInfoService stockInfoService;
-	
-	//全件取得
-	@GetMapping 
-	public List<StockInfo> getAll()
-	{
-		return stockInfoService.getStockInfoAll();
-	}
-	
-	//稼働中の保管場所の在庫情報
-	@GetMapping("/active")
-	public List<StockInfo> getByActive()
-	{
-		 return stockInfoService.getActiveStockInfoData();
-	}
-	
-	//カテゴリ名、名前、個数による取得
-	@GetMapping("/category/{category}/name/{name}/amount/{amount}/than/{than}")
-	public List<StockInfo> getByCategoryAndNameAndAmount(@PathVariable String category,@PathVariable String name,@PathVariable Integer amount,@PathVariable String than)
-	{
-		 return stockInfoService.getStockInfoByCategoryAndNameAndAmount(category,name,amount,than);
-	}
-	
-	//カテゴリ名、名前による取得
-	@GetMapping("/category/{category}/name/{name}")
-	public List<StockInfo> getByCategoryAndName(@PathVariable String category,@PathVariable String name)
-	{
-		return stockInfoService.getStockInfoByCategoryAndName(category,name);
-	}
-	
-	//カテゴリ名、個数による取得
-	@GetMapping("/category/{category}/amount/{amount}/than/{than}")
-	public List<StockInfo> getByCategoryAndAmount(@PathVariable String category,@PathVariable Integer amount,@PathVariable String than)
-	{
-		 return stockInfoService.getStockInfoByCategoryAndAmount(category,amount,than);
-	}	
-	
-	//名前、個数による取得
-	@GetMapping("/name/{name}/amount/{amount}/than/{than}")
-	public List<StockInfo> getByNameAndAmount(@PathVariable String name,@PathVariable Integer amount,@PathVariable String than)
-	{
-		 return stockInfoService.getStockInfoByNameAndAmount(name,amount,than);
-	}
-	
-	//カテゴリ名による取得
-	@GetMapping("/category/{category}")
-	public List<StockInfo> getByCategory(@PathVariable String category)
-	{
-		 return stockInfoService.getStockInfoByCategory(category);
-	}
-	
-	//名前による取得
-	@GetMapping("/name/{name}")
-	public List<StockInfo> getByCName(@PathVariable String name)
-	{
-		 return stockInfoService.getStockInfoByName(name);
-	}		
-				 
-	//個数による取得
-	@GetMapping("/amount/{amount}/than/{than}")
-	public List<StockInfo> getByAmount(@PathVariable Integer amount,@PathVariable String than)
-	{
-		return stockInfoService.getStockInfoByAmount(amount,than);
-	}				
-	
+@CrossOrigin(origins = "*")
+public class StockInfoController {
+    private final StockInfoService stockInfoService;
+    private static final Logger logger = LoggerFactory.getLogger(StockInfoController.class);
+
+    @GetMapping
+    public List<StockInfo> getAll() {
+        return stockInfoService.getStockInfoAll();
+    }
+
+    @GetMapping("/active")
+    public List<StockInfo> getByActive() {
+        return logAndExecute(ScreenName.STOCK, FeatureName.LIST, stockInfoService::getActiveStockInfoData);
+    }
+
+    @GetMapping("/search")
+    public List<StockInfo> searchStockInfo(
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Integer amount,
+            @RequestParam(required = false) String than) {
+        return logAndExecute(ScreenName.STOCK, FeatureName.SEARCH,
+                () -> stockInfoService.searchStockInfo(category, name, amount, than));
+    }
+
+    private List<StockInfo> logAndExecute(String screenName, String featureName, Supplier<List<StockInfo>> action) {
+        logger.info(screenName + "の" + featureName + "を開始します。");
+        try {
+            List<StockInfo> result = action.get();
+            logger.info(screenName + "の" + featureName + "が終了しました。");
+            return result;
+        } catch (DataAccessException e) {
+            logger.error("データベースエラーが発生しました。", e);
+            throw new RuntimeException("データベースが停止しています。");
+        } catch (Exception e) {
+            logger.error("サーバーエラーが発生しました。", e);
+            throw new RuntimeException("サーバーが停止しています。");
+        }
+    }
 }
