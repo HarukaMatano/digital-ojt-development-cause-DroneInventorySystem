@@ -4,6 +4,16 @@ const nameApiUrl = 'http://localhost:8080/stock-info/search';
 
 const stockList = document.getElementById('stock-list');
 
+// Enable or disable logging
+const enableLogging = true;
+
+// Function to log messages to the console
+function logMessage(message) {
+    if (enableLogging) {
+        console.log(message);
+    }
+}
+
 // 検索フォームの枠を生成
 const searchContainer = createSearchContainer();
 stockList.appendChild(searchContainer);
@@ -104,7 +114,7 @@ function fetchData(url, callback) {
         })
         .then(data => callback(data))
         .catch(error => {
-            console.error('データの取得中にエラーが発生しました:', error);
+            logMessage(`データの取得中にエラーが発生しました: ${error}`);
             if (error.message.includes('サーバーが停止しています')) {
                 alert('サーバーが停止しています。');
             } else if (error.message.includes('データベースが停止しています')) {
@@ -227,7 +237,7 @@ function handleSearch() {
 
     searchApiUrl = searchApiUrl.slice(0, -1); // 最後の '&' を削除
 
-    console.log(searchApiUrl); // ここでURLをコンソールに出力
+    logMessage(searchApiUrl); // ここでURLをコンソールに出力
 
     fetchData(searchApiUrl, updateTable);
 }
@@ -252,3 +262,9 @@ function updateTable(filteredData) {
         tbody.appendChild(row);
     });
 }
+
+// 年を自動的に取得して表示
+document.addEventListener('DOMContentLoaded', (event) => {
+    const currentYear = new Date().getFullYear();
+    document.querySelector('.copyright span').textContent = `Copyright © Your Website ${currentYear}`;
+});
